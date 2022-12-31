@@ -1,0 +1,5 @@
+@media (max-width: 1370px) {
+  .request-side {
+    display: none !important;
+  }
+}

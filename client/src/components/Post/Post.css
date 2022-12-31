@@ -1,0 +1,90 @@
+.post {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: #fff;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0px 1px 3px 0px rgb(0 0 0 / 2%), 0px 1px 1px 0px rgb(0 0 0 / 0%),
+    0px 0px 2px 0px rgb(0 0 0 / 5%) !important;
+}
+
+.post > img {
+  width: 100%;
+  max-height: 30rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.post-react {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.post-header .head .left > img {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+}
+.post-header .head .left {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.post-header .head .right {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.home-options-svg {
+  fill: black !important;
+}
+
+.post-header .head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-header .description {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 0.97rem;
+}
+
+.edit-desc-input {
+  border: none;
+  outline: none;
+  font-size: 0.97rem;
+  font-family: "Euclid Circular A" !important;
+  padding: 0;
+  width: 88%;
+  resize: none;
+}
+
+.edit-desc-area {
+  display: flex;
+}
+
+.edit-desc-area .ps-btn {
+  height: fit-content;
+}
+
+.custom-comment {
+  font-family: Helvetica, Arial, sans-serif !important;
+}
+
+.comment-box-head .write-comment {
+  box-shadow: 0 8px 6px -6px #0000001a;
+}
+
+.popup-profile {
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+

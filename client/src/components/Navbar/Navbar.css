@@ -1,0 +1,62 @@
+.user-navbar .navbar-header {
+  box-shadow: -1px -1px 4px -1px rgb(0 0 0 / 0%),
+    0px 1px 6px 0px rgb(0 0 0 / 8%), 0px 1px 10px 0px rgb(0 0 0 / 0%) !important;
+    margin-top: -1px !important;
+}
+
+@media (min-width: 600px) {
+  .css-r6ewbb-MuiToolbar-root {
+    min-height: 56px !important;
+  }
+}
+
+.user-navbar .css-1q39md6-MuiButtonBase-root-MuiButton-root {
+  margin-top: 12px !important;
+  color: #0066ed !important;
+}
+
+.user-navbar .css-z5gn4u-MuiSvgIcon-root {
+  display: none !important;
+}
+
+.user-navbar .css-1uzrjc8-MuiSvgIcon-root {
+  width: 1.5em !important;
+  height: 1.5em !important;
+  fill: #0066ed !important;
+}
+
+.user-navbar .css-1pz7awu-MuiButtonBase-root-MuiIconButton-root {
+  color: gray !important;
+}
+
+.user-navbar .searchbar {
+  transform: translate(-50%, -10%) !important;
+  left: 50% !important;
+  position: fixed;
+  border-radius: 18px;
+  margin-top: 8px;
+  height: 39px;
+}
+
+.user-navbar .search-icon {
+  fill: #898989;
+}
+
+@media (max-width: 900px) {
+  .user-navbar .searchbar {
+    display: none !important;
+  }
+}
+
+.user-navbar .search{
+  width: 350px;
+}
+
+.css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
+  border-radius: .5rem !important;
+}
+
+.css-1uwgr7b-MuiTypography-root {
+  font-size: .95rem;
+  font-family:"Euclid Circular A" !important;;
+}

@@ -1,0 +1,6 @@
+.chats-body {
+    display: grid;
+    grid-template-columns:  24% 70%;
+    gap: 1rem;
+    justify-content: start;
+  }

@@ -1,0 +1,86 @@
+.profile-head {
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .profile-head {
+    max-height: 40rem !important;
+  }
+}
+
+.profile-head .profile-head-cont {
+  padding-top: 29px;
+  max-width: 70% !important;
+}
+
+.ph-box .cover-picture {
+  height: 25rem;
+  background-color: #bababa73 !important;
+  width: 65rem;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+.ph-box .profile-picture-main {
+  display: flex;
+  justify-content: center;
+}
+.profile-picture-main .profile-picture {
+  border-radius: 50% !important;
+  margin-top: -5rem !important;
+  width: 9rem;
+  height: 9rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-picture .profile-picture-icon {
+  width: 9rem;
+  height: 9rem;
+  border: 5px solid white;
+}
+
+.h-500-px {
+  height: 500px;
+}
+.max-w-150-px {
+  max-width: 138px;
+}
+
+@media (min-width: 1536px) {
+  .custom-container {
+    max-width: 1000px !important;
+  }
+}
+
+.profile-follow-btn {
+  background-color: #0066ed !important;
+  font-size: 0.85rem !important;
+  font-weight: 100 !important;
+  letter-spacing: 1px !important;
+}
+.profile-follow-btn:hover {
+  background-color: #005bd1 !important;
+}
+
+.profile-add-story-btn {
+  fill: #0066ed !important;
+  font-size: 2.4rem !important;
+}
+
+.profile-add-story-btn:hover {
+  fill: #0066ed !important;
+  cursor: pointer;
+}
+
+.profile-img-style:hover{
+  background-color: #d6d6e04d;
+  border-radius: 13.9rem;
+  padding-left: 5px;
+  padding-right: 5px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.profile-img-style{
+  transition: all 0.3s;
+}

@@ -1,0 +1,85 @@
+.middle-section .custom-main {
+  box-shadow: 0px 3px 4px 3px rgb(0 0 0 / 2%), 0px 1px 1px 0px rgb(0 0 0 / 0%),
+    0px 2px 2px 0px rgb(0 0 0 / 5%) !important;
+  background-color: #fff !important;
+  max-width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  height: 70.3vh;
+  padding: 0;
+  margin-top: 1px;
+}
+.middle-section .message-bar {
+  box-shadow: 0px 3px 4px 3px rgb(0 0 0 / 2%), 0px 1px 1px 0px rgb(0 0 0 / 0%),
+    0px 2px 2px 0px rgb(0 0 0 / 5%) !important;
+  background-color: #fff !important;
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  max-width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  height: 10%;
+  padding: 0;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem;
+  padding-bottom:0 !important ;
+  overflow: scroll;
+  height: 70vh;
+}
+
+.chatbox-message {
+  background: linear-gradient(98.63deg, #f9a225 0%, #f95f35 100%);
+  color: white;
+  padding: 0.7rem;
+  border-radius: 1rem 1rem 1rem 0;
+  max-width: 28rem;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages > span {
+  font-size: 0.6rem;
+  color: gray;
+}
+.chatbox-message > span:nth-child(1) {
+  font-size: 0.8rem;
+}
+.own-message {
+  align-self: flex-end;
+  border-radius: 1rem 1rem 0 1rem;
+  background: linear-gradient(98.63deg, #24e4f0 0%, #358ff9 100%);
+}
+
+.react-input-emoji--container {
+  margin: 0 !important;
+  border: 0 !important;
+  background-color: #e2e6ed;
+  font-family: "Euclid Circular A" !important;
+  font-size: 0.87rem !important;
+  font-weight: normal !important;
+}
+
+.react-input-emoji--input {
+  margin-left: 2px !important;
+  font-weight: normal !important;
+}
+
+.react-input-emoji--button svg {
+  fill: #0066ed !important;
+}
+
+.react-emoji {
+  gap: 0.8rem !important;
+}
+
+.react-input-emoji--button :hover {
+  height: 37px !important;
+  background-color: #1976d221 !important;
+  border-radius: 0.5rem !important;
+}

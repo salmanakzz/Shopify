@@ -1,0 +1,23 @@
+.home-body {
+    display: grid;
+    grid-template-columns: 20rem 40rem 20rem;
+    gap: 3rem;
+    justify-content: center;
+  }
+  
+  @media (max-width: 1370px) {
+    .home-body {
+      grid-template-columns: 30rem 20rem !important;
+      gap: 3rem !important;
+    }
+  }
+  
+  @media (max-width: 870px) {
+    .home-body {
+      grid-template-columns: 30rem !important;
+      gap: 1rem !important;
+      display: block !important;
+      margin: 12px !important;
+    }
+  }
+  

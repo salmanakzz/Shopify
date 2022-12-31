@@ -1,0 +1,49 @@
+.number-verify .a-link {
+  margin: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  color: #3a74e7;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  text-decoration-color: rgba(25, 118, 210, 0.4);
+}
+
+.number-verify .validate-error {
+  margin: 0;
+  margin-top: 6px;
+  color: #bf1650;
+  font-size: 15px;
+}
+
+.number-verify .validate-error::before {
+  display: inline;
+  content: "⚠ ";
+}
+
+.number-verify .custom-main {
+  background: linear-gradient(180deg, #ffffff 50%, #0f244c 50%);
+  border-radius: 0.5rem;
+}
+
+.number-verify .login-title {
+  font-family: "Euclid Circular A" !important;
+  font-size: 1.9rem !important;
+  color: #0f244c !important;
+}
+
+.number-verify .inner-body {
+  background-color: white;
+  border-radius: 6px;
+  margin: -23px;
+  padding: 15px;
+  margin-top: 6px;
+}
+
+.number-verify .submit-login:hover {
+  background-color: #244583;
+}
+
+

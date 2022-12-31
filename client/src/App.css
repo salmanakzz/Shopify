@@ -1,0 +1,47 @@
+@font-face {
+  font-family: "Euclid Circular A";
+  src: local("Euclid Circular A"),
+    url(./fonts/Euclid\ Circular\ A\ Medium.ttf) format("truetype");
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Euclid Circular A" !important;
+  /* background-color: #acabfa !important; */
+  background: #F0F2F5 !important;
+}
+
+.custom-button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: none;
+  border-radius: 1.5rem;
+  background: #0066ed;
+  transition: all 100ms ease-out;
+  font-family: "Euclid Circular A" !important;
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
+
+input :focus{
+  border: none;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.edit-desc-input :focus{
+  border: none;
+  outline: none;
+  box-shadow: none !important;
+}

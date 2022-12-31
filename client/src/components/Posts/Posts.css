@@ -1,0 +1,13 @@
+.posts .add-share-btn {
+  top: 88%;
+  position: fixed;
+  width: 2.7rem;
+  height: 2.7rem;
+  fill: #0066ed;
+  cursor: pointer;
+}
+
+.add-share-menu {
+    top: 40% !important;
+    right: 50% !important;
+}

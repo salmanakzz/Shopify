@@ -1,0 +1,15 @@
+.profile-body-inner {
+  display: grid;
+  grid-template-columns: 20rem 40rem;
+  gap: 3rem;
+  justify-content: center;
+  margin-top: 0.5rem !important;
+}
+
+@media (max-width: 1024px) {
+  .profile-body-inner {
+    display: block !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}

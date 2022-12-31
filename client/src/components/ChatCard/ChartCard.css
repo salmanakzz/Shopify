@@ -1,0 +1,86 @@
+.chat-card .custom-main {
+  box-shadow: 0px 1px 3px 0px rgb(0 0 0 / 2%), 0px 1px 1px 0px rgb(0 0 0 / 0%),
+    0px 0px 2px 0px rgb(0 0 0 / 5%) !important;
+  background-color: #fff !important;
+  border-radius: 0.5rem;
+  position: fixed;
+  max-width: 20rem !important;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  padding: 0;
+  margin-top: 1rem;
+}
+.chat-card .profile-custom-main {
+  box-shadow: 0px 1px 3px 0px rgb(0 0 0 / 2%), 0px 1px 1px 0px rgb(0 0 0 / 0%),
+    0px 0px 2px 0px rgb(0 0 0 / 5%) !important;
+  background-color: #fff !important;
+  border-radius: 0.5rem;
+  position: relative;
+  max-width: 20rem !important;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  padding: 0;
+}
+
+.scroll-fix {
+  position: fixed !important;
+  top: 5rem !important;
+}
+
+.chat-card .custom-main hr {
+  background-color: #0000000f;
+  width: 100%;
+  height: 1.4px;
+  border: 0;
+}
+
+.chat-card {
+  width: 100%;
+  border-radius: 0.7rem;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.chater {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.chater > div {
+  display: flex;
+  gap: 10px;
+}
+
+.chater-img {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+}
+
+.chater-name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.online-btn {
+  margin-left: 30px;
+  fill: #36bf2d !important;
+  width: 0.8rem !important;
+}
+
+.co-btn {
+  fill: #0066ed !important;
+}
+
+.co-btn:hover {
+  fill: #474242e0 !important;
+  cursor: pointer;
+}
