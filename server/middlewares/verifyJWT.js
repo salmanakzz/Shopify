@@ -3,10 +3,8 @@
 const jwt = require("jsonwebtoken");
 
 const verifyJWT = (req, res, next) => {
-
   try {
     const token = req.headers["x-accesss-token"];
-
     if (!token) {
       res.json({ user: false, admin: false, auth: false, err: "no token" });
     } else {
@@ -19,7 +17,8 @@ const verifyJWT = (req, res, next) => {
             auth: false,
           });
         } else {
-          req.userData = decoded.data;
+         
+          req.adminData = decoded.data;
           next();
         }
       });

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ContextUser } from "../../store/MainContext";
 import Posts from "../Posts/Posts";
 import PostShare from "../PostShare/PostShare";
@@ -7,16 +7,17 @@ import "./PostSide.css";
 
 const PostSide = ({ page }) => {
   const { currentUser, profileUser } = useContext(ContextUser);
+  const [storyAdd, setStoryAdd] = useState(false);
   return (
     <div
       className="post-side"
       style={{ marginTop: page === "profile" ? "-1rem" : "4rem" }}
     >
-      {page !== "profile" ? <StoryView /> : ""}
+      {page !== "profile" ? <StoryView storyAdd={storyAdd} setStoryAdd={setStoryAdd} /> : ""}
       {page === "profile" ? (
         profileUser && profileUser._id === currentUser._id && <PostShare />
       ) : (
-        <PostShare />
+        <PostShare setStoryAdd={setStoryAdd} />
       )}
       <Posts page={page} />
     </div>

@@ -55,7 +55,7 @@ const fetchAllPostsFunc = async () => {
     const url = await getSignedUrl(s3, command, { expiresIn: 60 });
     post.imageUrl = url;
 
-    if(post.user[0]?.profilePicture){
+    if (post.user[0]?.profilePicture) {
       const getObjectParams2 = {
         Bucket: process.env.BUCKET_NAME,
         Key: post.user[0].profilePicture,
@@ -64,8 +64,6 @@ const fetchAllPostsFunc = async () => {
       const url2 = await getSignedUrl(s3, command2, { expiresIn: 60 });
       post.user[0].profilePictureUrl = url2;
     }
-
-    
   }
   return posts;
 };

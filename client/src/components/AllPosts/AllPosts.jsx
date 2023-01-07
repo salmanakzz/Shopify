@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { fetchUsers } from "../../api/admin/fetchUsers";
+import { fetchAllPosts } from "../../api/admin/fetchAllPosts";
 import { Loading } from "../../components";
 import Header from "../partials/Header";
 import Sidebar from "../partials/Sidebar";
-import User from "../User/User";
+import Post from "./Post";
 
-function Users({ blocked }) {
+function AllPosts({ blocked }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [users, setUsers] = useState(false);
+  const [posts, setPosts] = useState(false);
   useEffect(() => {
-    fetchUsers().then((response) => {
-      if (blocked) {
-        setUsers(response.filter((user) => user.blocked));
-        return;
-      }
-      setUsers(response);
+    fetchAllPosts().then((response) => {
+      setPosts(response);
+      console.log(response);
     });
   }, []);
 
@@ -27,12 +24,14 @@ function Users({ blocked }) {
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         {/*  Site header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {!users && <Loading />}
+        {!posts && <Loading />}
         <main>
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
             <div className="col-span-full xl:col-span-8 bg-white shadow-lg rounded-sm border border-slate-200">
               <header className="px-5 py-4 border-b border-slate-100">
-                <h2 className="font-semibold text-slate-800">{blocked ? "Blocked Users" : "Users"}</h2>
+                <h2 className="font-semibold text-slate-800">
+                  {blocked ? "Blocked Posts" : "Posts"}
+                </h2>
               </header>
               <div className="p-3">
                 {/* Table */}
@@ -46,17 +45,17 @@ function Users({ blocked }) {
                         </th>
                         <th className="p-2">
                           <div className="font-semibold text-left">
-                            Full Name
+                            image
                           </div>
                         </th>
                         <th className="p-2">
                           <div className="font-semibold text-center">
-                            Email Address
+                            userId
                           </div>
                         </th>
                         <th className="p-2">
                           <div className="font-semibold text-center">
-                            Mobile Number
+                            Post Date
                           </div>
                         </th>
                         <th className="p-2">
@@ -79,9 +78,10 @@ function Users({ blocked }) {
                     {/* Table body */}
                     <tbody className="text-sm font-medium divide-y divide-slate-100">
                       {/* Row */}
-                      {users &&
-                        users.map((user, index) => (
-                          <User user={user} idx={index} />
+                      {posts &&
+                        posts.map((post, index) => (
+                            
+                          <Post post={post} idx={index} />
                         ))}
                     </tbody>
                   </table>
@@ -96,4 +96,4 @@ function Users({ blocked }) {
   );
 }
 
-export default Users;
+export default AllPosts;

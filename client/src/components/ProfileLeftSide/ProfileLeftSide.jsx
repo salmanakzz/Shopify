@@ -1,5 +1,5 @@
 import React from "react";
-import ChatCard from "../ChatCard/ChatCard";
+import ChatCard from "../FriendsCard/FriendsCard";
 import "./ProfileLeftSide.css";
 
 function ProfileLeftSide() {

@@ -1,5 +1,5 @@
 import { Box, Container } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { userChats } from "../../../api/userChats";
 import { ContextUser } from "../../../store/MainContext";
 import Conversation from "../../Conversation/Conversation";
@@ -9,6 +9,7 @@ import "./LeftSection.css";
 function LeftSection({ chats, setCurrentChat, checkOnlineStatus }) {
   const { currentUser } = useContext(ContextUser);
   const [searchChatUsers, setSearchChatUsers] = useState(null)
+
   return (
     <div className="left-section">
       <Container

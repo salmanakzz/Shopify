@@ -11,6 +11,7 @@ const userRouter = require("./routes/user");
 const adminRouter = require("./routes/admin");
 const chatRouter = require("./routes/chat");
 const messageRouter = require("./routes/message");
+const storyRouter = require("./routes/story");
 const { urlencoded } = require("express");
 
 app.use(cors());
@@ -32,6 +33,7 @@ app.use("/", userRouter);
 app.use("/admin", adminRouter);
 app.use("/chat", chatRouter);
 app.use("/message", messageRouter);
+app.use("/story", storyRouter);
 
 app.get("*", (req, res) => {
   res.send("404");

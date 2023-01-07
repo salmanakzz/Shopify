@@ -1,24 +1,18 @@
 import { Box, Container } from "@mui/material";
 import React, { useState } from "react";
-import ChatCard from "../ChatCard/ChatCard";
+import FriendsCard from "../FriendsCard/FriendsCard";
 import ClearIcon from "@mui/icons-material/Clear";
 import DefaultProfile from "../../assets/images/DefaultProfile.png";
 
-import "./ChatSide.css";
+import "./FriendsSide.css";
 
-function ChatSide() {
-  const [chatUser, setChatUser] = useState(null);
-  console.log(chatUser);
+function FriendsSide() {
+  const [friendUser, setFriendUser] = useState(null);
+  console.log(friendUser);
   return (
     <div className="chat-side" style={{ marginTop: "4rem" }}>
-      <ChatCard setChatUser={setChatUser} />
-      {/* <Container fixed className="fixed !w-[21%] pr-4 !pt-[9rem]">
-        <Box
-          className="rounded-md shadow-lg"
-          sx={{ bgcolor: "#fff", height: "50vh" }}
-        />
-      </Container> */}
-      {chatUser && (
+      <FriendsCard setFriendUser={setFriendUser} />
+      {friendUser && (
         <Container
           className="custom-main-chatbox !p-0"
           component="main"
@@ -52,4 +46,4 @@ function ChatSide() {
   );
 }
 
-export default ChatSide;
+export default FriendsSide;

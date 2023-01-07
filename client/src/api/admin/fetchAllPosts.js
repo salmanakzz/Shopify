@@ -1,11 +1,11 @@
-import { fetchUsersUrl } from "../../urls/urls";
+import { fetchAllPostsUrl, fetchUsersUrl } from "../../urls/urls";
 import Axios from "../../axios/axios";
 import { getToken } from "../tokenFetch";
 
-export const fetchUsers = async () => {
+export const fetchAllPosts = async () => {
   try {
     const token = getToken("adminToken");
-    const { data } = await Axios.get(fetchUsersUrl,{
+    const { data } = await Axios.get(fetchAllPostsUrl,{
       headers: {
         "x-accesss-token": token,
       },

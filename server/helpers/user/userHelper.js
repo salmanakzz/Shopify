@@ -261,6 +261,22 @@ module.exports = {
         });
     });
   },
+  // user remove report operations
+  removeUserReport: (currentUserId, profileUserId) => {
+    return new Promise((resolve, reject) => {
+      user
+        .updateOne(
+          { _id: profileUserId },
+          { $pull: { reports: ObjectId(currentUserId) } }
+        )
+        .then(() => {
+          resolve({ status: "ok", removeReport: true });
+        })
+        .catch((error) => {
+          reject({ status: "error", removeReport: false, error });
+        });
+    });
+  },
   // user data fetching operations
   fetchUserDetails: (userId) => {
     return new Promise(async (resolve, reject) => {
@@ -307,10 +323,23 @@ module.exports = {
             },
           },
         ]);
+      
         let friendsArr = [];
         friends.forEach((data) => {
           friendsArr.push(data.user[0]);
         });
+
+        for (const friend of friendsArr) {
+          if(friend?.profilePicture){
+           const getObjectParams = {
+             Bucket: process.env.BUCKET_NAME,
+             Key: friend.profilePicture,
+           };
+           const command = new GetObjectCommand(getObjectParams);
+           const url = await getSignedUrl(s3, command, { expiresIn: 60 });
+           friend.profilePictureUrl = url;
+          }
+         }
         resolve({ status: "ok", fetchFriends: true, friendsArr });
       } catch (error) {
         reject({ status: "error", fetchFriends: false, error });
@@ -382,4 +411,5 @@ module.exports = {
         });
     });
   },
+ 
 };

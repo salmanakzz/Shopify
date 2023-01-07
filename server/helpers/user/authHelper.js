@@ -10,11 +10,7 @@ const vonage = new Vonage({
   apiSecret: process.env.VONAGE_SECRET,
 });
 
-
-const {
-  S3Client,
-  GetObjectCommand,
-} = require("@aws-sdk/client-s3");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 const s3 = new S3Client({
@@ -73,36 +69,39 @@ module.exports = {
           profilePicture,
         };
 
-        if(profilePicture){
+        if (profilePicture) {
           const getObjectParams = {
             Bucket: process.env.BUCKET_NAME,
             Key: profilePicture,
           };
           const command = new GetObjectCommand(getObjectParams);
           const url = await getSignedUrl(s3, command, { expiresIn: 60 });
-          data.profilePictureUrl = url
+          data.profilePictureUrl = url;
         }
 
         bcrypt.compare(password, userDetails.password).then((status) => {
           if (status) {
-            
-            const token = jwt.sign({ data }, process.env.JWT_ACCESS_SECRET, {
-              expiresIn: "30m",
-            });
-            const refreshToken = jwt.sign(
-              { _id },
-              process.env.JWT_REFRESH_SECRET,
-              {
-                expiresIn: "1y",
-              }
-            );
-            resolve({
-              status: "ok",
-              user: true,
-              token: token,
-              refreshToken,
-              result: userDetails,
-            });
+            if (userDetails.blocked) {
+              reject({ status: "error", error: "userBlocked" });
+            } else {
+              const token = jwt.sign({ data }, process.env.JWT_ACCESS_SECRET, {
+                expiresIn: "30m",
+              });
+              const refreshToken = jwt.sign(
+                { _id },
+                process.env.JWT_REFRESH_SECRET,
+                {
+                  expiresIn: "1y",
+                }
+              );
+              resolve({
+                status: "ok",
+                user: true,
+                token: token,
+                refreshToken,
+                result: userDetails,
+              });
+            }
           } else {
             reject({ status: "error", error: "invalid username or password" });
           }

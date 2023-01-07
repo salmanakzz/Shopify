@@ -9,9 +9,6 @@ import { Typography } from "@mui/material";
 function Conversation({ data, currentUserId, online, searchUser }) {
   const [chatUserData, setChatUserData] = useState(null);
   useEffect(() => {
-    if (searchUser) {
-      return;
-    }
     const chatUserId = data.members.find((id) => id !== currentUserId);
     getUserData(chatUserId).then(({ userData }) => {
       setChatUserData(userData);

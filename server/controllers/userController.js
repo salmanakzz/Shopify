@@ -329,6 +329,19 @@ const submitReport = (req, res) => {
     });
 };
 
+// user remove report route controlling
+const removeReport = (req, res) => {
+  const {currentUserId, profileUserId } = req.body;
+  userHelper
+    .removeUserReport(currentUserId,profileUserId)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // fetch user data route controlling
 const userData = (req, res) => {
   const { userId } = req.params;
@@ -379,6 +392,19 @@ const uploadProfilePicture = (req, res) => {
     });
 };
 
+// fetch all posts route controlling
+const fetchAllPosts = (req, res) => {
+  postHelper
+    .fetchAllPosts()
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+
 
 module.exports = {
   userVerified,
@@ -404,8 +430,10 @@ module.exports = {
   fetchSuggestions,
   requestAccessToken,
   submitReport,
+  removeReport,
   userData,
   fetchFriends,
   fetchUsers,
   uploadProfilePicture,
+  fetchAllPosts
 };

@@ -24,8 +24,32 @@ const adminLogin = (req, res) => {
 const fetchUsers = async (req, res) => {
   try {
     const users = await userHelper.fetchUsersDetails();
-    res.json(users)
+    res.json(users);
   } catch (error) {
+    console.log(error);
+  }
+};
+
+// block user route controlling
+const blockUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const response = await userHelper.blockingUser(userId);
+    res.json(response);
+  } catch (error) {
+    res.json(error);
+    console.log(error);
+  }
+};
+
+// unblock user route controlling
+const unBlockUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const response = await userHelper.unBlockingUser(userId);
+    res.json(response);
+  } catch (error) {
+    res.json(error);
     console.log(error);
   }
 };
@@ -33,4 +57,6 @@ module.exports = {
   adminVerified,
   adminLogin,
   fetchUsers,
+  blockUser,
+  unBlockUser,
 };

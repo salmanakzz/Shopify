@@ -16,6 +16,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useForm } from "react-hook-form";
 import Axios from "../../axios/axios";
 import Alert from "@mui/material/Alert";
+import { useSnackbar } from "notistack";
 
 function Copyright(props) {
   return (
@@ -33,6 +34,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login({ user, url }) {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
   const [invalid, setInvalid] = useState(false);
@@ -52,6 +54,9 @@ export default function Login({ user, url }) {
             document.cookie = `refreshToken=${data.refreshToken}`;
             navigate("/");
             return;
+          } else if (data.status === "error" && data.error === "userBlocked") {
+            handleClickVariant("Your account is temporarly blocked!","error")
+            return
           }
           setInvalid(true);
         })
@@ -72,6 +77,16 @@ export default function Login({ user, url }) {
           console.log(err);
         });
     }
+  };
+
+  const handleClickVariant = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+    });
   };
 
   return (

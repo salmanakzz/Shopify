@@ -4,5 +4,6 @@ module.exports = {
   USER_COLLECTION: "user",
   POST_COLLECTION: "post",
   CHAT_COLLECTION: "chat",
-  MESSAGE_COLLECTION:'message'
+  MESSAGE_COLLECTION:'message',
+  STORY_COLLECTION:'story'
 };

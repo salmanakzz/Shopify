@@ -1,5 +1,5 @@
 import React from "react";
-import ChatSide from "../ChatSide/ChatSide";
+import FriendsSide from "../FriendsSide/FriendsSide";
 import PostSide from "../PostSide/PostSide";
 import RequestSide from "../RequestSide/RequestSide";
 import "./HomeBody.css";
@@ -9,7 +9,7 @@ function HomeBody() {
     <div className="home-body">
       <RequestSide />
       <PostSide />
-      <ChatSide />
+      <FriendsSide />
     </div>
   );
 }

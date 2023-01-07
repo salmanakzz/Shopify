@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import "./ChartCard.css";
-import { Requestswww } from "../../api/Requestswww";
-import Online from "@mui/icons-material/FiberManualRecord";
+import "./FriendsCard.css";
+import DefaultProfile from '../../assets/images/DefaultProfile.png'
 import MapsUgcIcon from "@mui/icons-material/MapsUgc";
+import { fetchFriends } from "../../api/fetchFriends";
+import { ContextUser } from "../../store/MainContext";
 
-function ChatCard({ page ,setChatUser}) {
+function FriendsCard({ page ,setFriendUser}) {
+  const { currentUser } = useContext(ContextUser);
+  const [friends, setFriends] = useState(null)
   useEffect(() => {
     if (page === "profile") {
       window.onscroll = function () {
@@ -24,8 +27,15 @@ function ChatCard({ page ,setChatUser}) {
     }
   }, []);
 
+  useEffect(() => {
+   fetchFriends(currentUser._id).then(({friendsArr})=>{
+    setFriends(friendsArr);
+   })
+  }, [])
+  
+
   return (
-    <div className="chat-card">
+    <div className="friends-card">
       <Container
         component="main"
         maxWidth="xs"
@@ -40,7 +50,7 @@ function ChatCard({ page ,setChatUser}) {
             marginBottom: "8px",
           }}
         >
-          {page === "profile" ? "Friends" : "Chats"}
+          Friends
         </p>
         <hr />
         <Box
@@ -48,22 +58,21 @@ function ChatCard({ page ,setChatUser}) {
             padding: "12px",
           }}
         >
-          {Requestswww.map((requester, idx) => (
-            <div className="chater" key={idx}>
+          {friends?.length > 0 ? friends.map((friend, idx) => (
+            <div className="friend" key={idx}>
               <div>
-                <img src={requester.img} alt="" className="chater-img" />
-                <div className="chater-name">
-                  <span onClick={()=>setChatUser(requester)}>{requester.name}</span>
+                <img src={friend.profilePictureUrl ? friend.profilePictureUrl : DefaultProfile} alt="" className="friend-img" />
+                <div className="friend-name">
+                  <span onClick={()=>setFriendUser(friend)}>{friend.firstname} {friend.lastname}</span>
                 </div>
               </div>
-              <Online className="online-btn" />
               <MapsUgcIcon className="co-btn" />
             </div>
-          ))}
+          )):<span><div class="flex justify-center align-center"><span>No Friends</span></div></span>}
         </Box>
       </Container>
     </div>
   );
 }
 
-export default ChatCard;
+export default FriendsCard;

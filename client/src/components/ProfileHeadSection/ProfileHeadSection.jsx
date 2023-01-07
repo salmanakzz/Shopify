@@ -25,18 +25,21 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { FriendRequest } from "../../api/FriendRequest";
 import { RemoveFriendRequest } from "../../api/RemoveFriendRequest";
 import { submitReport } from "../../api/submitReport";
+import { removeReport } from "../../api/removeReport";
 import CropEasy from "../crop/CropEasy";
 import { Crop } from "@mui/icons-material";
 import { uploadProfilePicture } from "../../api/uploadProfilePicture";
 import { ContextAllPosts } from "../../store/AllPostContext";
+import { useSnackbar } from "notistack";
 
 function ProfileHeadSection() {
+  const { enqueueSnackbar } = useSnackbar();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { currentUser, profileUser, setProfileUser } = useContext(ContextUser);
   const { profilePostDatas } = useContext(ContextAllPosts);
   const { _id } = profileUser ? profileUser : currentUser;
 
-  const [profileUserDetails, serProfileUserDetails] = useState(
+  const [profileUserDetails, setProfileUserDetails] = useState(
     profileUser ? profileUser : currentUser
   );
 
@@ -61,7 +64,7 @@ function ProfileHeadSection() {
 
   useEffect(() => {
     fetchProfileUserDetails(_id).then((result) => {
-      serProfileUserDetails(result);
+      setProfileUserDetails(result);
       setProfileUser(result);
       result?.profilePictureUrl && setProfilePicture2(result.profilePictureUrl);
       result?.profilePictureUrl && setPhotoURL(result.profilePictureUrl);
@@ -154,6 +157,8 @@ function ProfileHeadSection() {
     handleClose();
     submitReport(currentUserId, profileUserId).then((response) => {
       console.log(response);
+      setReported(true);
+      handleClickVariant("Report Added!", "success");
     });
   };
 
@@ -165,6 +170,19 @@ function ProfileHeadSection() {
       ? profileUserDetails.profilePictureUrl
       : null
   );
+
+  const [Reported, setReported] = useState(
+    profileUserDetails?.reports?.find((id) =>
+      id === currentUser._id ? true : false
+    )
+  );
+  const removeReportFun = (currentUserId, profileUserId) => {
+    removeReport(currentUserId, profileUserId).then((result) => {
+      console.log(result);
+      setReported(false);
+      handleClickVariant("Report Removed!", "success");
+    });
+  };
 
   const [loading, setLoading] = useState(false);
 
@@ -189,11 +207,27 @@ function ProfileHeadSection() {
 
       uploadProfilePicture(formData).then((response) => {
         console.log(response);
-        setProfilePicture2(photoURL);
-        setLoading(false);
-        setOpenEditProfile(false);
+        const { status, profileUpdated } = response;
+        if (status === "ok" && profileUpdated) {
+          setProfilePicture2(photoURL);
+          setLoading(false);
+          setOpenEditProfile(false);
+          handleClickVariant("Profile picture edited succesfully!", "success");
+          return;
+        }
+        handleClickVariant("Something went wrong!", "error");
       });
     }
+  };
+
+  const handleClickVariant = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+    });
   };
 
   return (
@@ -430,7 +464,12 @@ function ProfileHeadSection() {
                                           currentUser._id
                                         )
                                     : setting === "Report"
-                                    ? handleOpen()
+                                    ? Reported
+                                      ? removeReportFun(
+                                          currentUser._id,
+                                          profileUser._id
+                                        )
+                                      : handleOpen()
                                     : handleCloseUserMenu()
                                 }
                               >
@@ -441,6 +480,10 @@ function ProfileHeadSection() {
                                         ? "Friend requested"
                                         : setting
                                       : ""
+                                    : setting === "Report"
+                                    ? Reported
+                                      ? "Remove Report"
+                                      : "Report"
                                     : setting}
                                 </Typography>
                               </MenuItem>

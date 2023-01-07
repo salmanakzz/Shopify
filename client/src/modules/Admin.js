@@ -1,5 +1,7 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import AllPostsPage from "../pages/AllPosts/AllPosts";
+import { BlockedUsersPage } from "../pages/BlockedUsers/BlockedUsers";
 import DashboardPage from "../pages/Dashboard/Dashboard";
 import LoginPage from "../pages/Login/Login";
 import UsersPage from "../pages/Users/Users";
@@ -28,6 +30,16 @@ function Admin() {
             path="/users"
             exact
             element={<UsersPage user={false} url={adminLogin} />}
+          />
+          <Route
+            path="/blocked-users"
+            exact
+            element={<BlockedUsersPage user={false} url={adminLogin} />}
+          />
+          <Route
+            path="/posts"
+            exact
+            element={<AllPostsPage user={false} url={adminLogin} />}
           />
         </Route>
       </Routes>

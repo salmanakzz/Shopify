@@ -27,12 +27,12 @@ export const fetchRequestsUrl = '/api/fetch-requests'
 export const addFriendUrl = '/api/add-friend' 
 export const fetchSuggestionsUrl = '/api/fetch-suggestions' 
 export const submitReportUrl = '/api/submit-report' 
+export const removeReportUrl = '/api/remove-report' 
 export const getUserDataUrl = '/api/userdata' 
 export const fetchFriendsUrl = '/api/fetch-friends' 
 export const fetchAllUsersUrl = '/api/fetch-users' 
-export const uploadProfilePictureUrl = '/api/upload-profile-picture'  
+export const uploadProfilePictureUrl = '/api/upload-profile-picture'   
  
-
 //urls related to chat
 export const createChatUrl = '/chat/api/create-chat' 
 export const fetchChatsUrl = '/chat/api/fetch-chats' 
@@ -44,3 +44,10 @@ export const addMessageUrl = '/message/api/add-message'
 // urls related to the admin
 export const adminLogin = "/admin/api/login";
 export const fetchUsersUrl = '/admin/api/fetch-users'
+export const blockUserUrl = '/admin/api/block-user'
+export const unblockUserUrl = '/admin/api/unblock-user'
+export const fetchAllPostsUrl = '/admin/api/fetch-all-posts'   
+
+//urls related to the story
+export const addStoryUrl = '/story/api/add-story' 
+export const getStoriesUrl = '/story/api/fetch-stories' 

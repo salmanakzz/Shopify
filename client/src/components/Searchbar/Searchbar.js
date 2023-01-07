@@ -3,7 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import JsonSearch from "search-array";
 import "./Searchbar.css";
 import { ContextUser } from "../../store/MainContext";
-import { fetchFriends } from "../../api/fetchFrends";
+import { fetchFriends } from "../../api/fetchFriends";
 import DefaultProfile from "../../assets/images/DefaultProfile.png";
 import { fetchAllUsers } from "../../api/fetchAllUsers";
 import { useNavigate } from "react-router-dom";

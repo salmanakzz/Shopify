@@ -26,15 +26,6 @@ module.exports = {
       } catch (error) {
         reject({ status: "error", chatCreated: false, error });
       }
-      // const members = [ObjectId(senderId), ObjectId(recieverId)];
-      // chatModel
-      //   .create({ members })
-      //   .then(() => {
-      //     resolve({ status: "ok", chatCreated: true });
-      //   })
-      //   .catch((error) => {
-      //     reject({ status: "error", chatCreated: false, error });
-      //   });
     });
   },
   // fetch user chats operations

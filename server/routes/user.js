@@ -29,7 +29,8 @@ const {
   fetchFriends,
   fetchUsers,
   uploadProfilePicture,
-  fetchUserProfile,
+  removeReport,
+  fetchAllPosts,
 } = require("../controllers/userController");
 const upload = require("../middlewares/imageUpload");
 const verifyJWT = require("../middlewares/verifyJWT");
@@ -104,6 +105,9 @@ router.get("/api/fetch-Suggestions", verifyJWT, fetchSuggestions);
 // user reporting route
 router.post("/api/submit-report", verifyJWT, submitReport);
 
+// user remove report route
+router.patch("/api/remove-report", verifyJWT, removeReport);
+
 // fetching user data route
 router.get("/api/userdata/:userId", verifyJWT, userData);
 
@@ -115,6 +119,9 @@ router.get("/api/fetch-users", verifyJWT, fetchUsers);
 
 // upload user profile picture route
 router.patch("/api/upload-profile-picture", verifyJWT, upload.single("image"),uploadProfilePicture);
+
+
+
 
 
 module.exports = router;
