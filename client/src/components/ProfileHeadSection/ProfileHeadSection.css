@@ -84,3 +84,7 @@
 .profile-img-style{
   transition: all 0.3s;
 }
+
+#profile-story-circle{
+  border: 3.5px solid #2a00ff;
+}

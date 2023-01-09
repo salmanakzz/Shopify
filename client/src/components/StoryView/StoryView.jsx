@@ -178,45 +178,45 @@ function StoryView({ storyAdd, setStoryAdd }) {
           </div>
         </Box>
       </Container>
-      {currentUserStory && currentUserStory[0]?.stories && (
-        <Modal
-          className="w-[auto]"
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="parent-modal-title"
-          aria-describedby="parent-modal-description"
-        >
-          <Box
-            sx={{
-              ...style,
-              width: "auto",
-              padding: "0",
-              borderRadius: ".5rem",
-            }}
+        {currentUserStory && currentUserStory[0]?.stories && (
+          <Modal
+            className="w-[auto]"
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="parent-modal-title"
+            aria-describedby="parent-modal-description"
           >
-            <Stories
-              stories={currentUserStory && currentUserStory[0].stories}
-              defaultInterval={1500}
-              // width={'100%'}
-              // height={'100vh'}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                background: "red",
-                cursor: "pointer",
+            <Box
+              sx={{
+                ...style,
+                width: "auto",
+                padding: "0",
+                borderRadius: ".5rem",
               }}
-              storyStyles={storyContent}
-              loop={false}
-              keyboardNavigation={true}
-              isPaused={() => {}}
-              currentIndex={() => {}}
-              onStoryStart={() => {}}
-              onStoryEnd={() => {}}
-              onAllStoriesEnd={onAllStoriesEndHandler}
-            />
-          </Box>
-        </Modal>
-      )}
+            >
+              <Stories
+                stories={currentUserStory && currentUserStory[0].stories}
+                defaultInterval={1500}
+                // width={'100%'}
+                // height={'100vh'}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  background: "red",
+                  cursor: "pointer",
+                }}
+                storyStyles={storyContent}
+                loop={false}
+                keyboardNavigation={true}
+                isPaused={() => {}}
+                currentIndex={() => {}}
+                onStoryStart={() => {}}
+                onStoryEnd={() => {}}
+                onAllStoriesEnd={onAllStoriesEndHandler}
+              />
+            </Box>
+          </Modal>
+        )}
       <div style={{ display: "none" }}>
         <input
           type="file"

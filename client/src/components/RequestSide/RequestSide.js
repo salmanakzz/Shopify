@@ -3,11 +3,11 @@ import RequestCard from "../RequestCard/RequestCard";
 import SuggestedCard from "../SuggetsedCard/SuggestedCard";
 import "./RequestSide.css";
 
-function RequestSide() {
+function RequestSide({ setFriends, friends }) {
   return (
     <div className="request-side" style={{ marginTop: "4rem" }}>
-      <RequestCard />
-      <SuggestedCard/>
+      <RequestCard friends={friends} setFriends={setFriends} />
+      <SuggestedCard />
     </div>
   );
 }

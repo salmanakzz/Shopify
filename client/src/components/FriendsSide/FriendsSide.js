@@ -6,12 +6,12 @@ import DefaultProfile from "../../assets/images/DefaultProfile.png";
 
 import "./FriendsSide.css";
 
-function FriendsSide() {
+function FriendsSide({friends}) {
   const [friendUser, setFriendUser] = useState(null);
   console.log(friendUser);
   return (
     <div className="chat-side" style={{ marginTop: "4rem" }}>
-      <FriendsCard setFriendUser={setFriendUser} />
+      <FriendsCard setFriendUser={setFriendUser} friends={friends}/>
       {friendUser && (
         <Container
           className="custom-main-chatbox !p-0"

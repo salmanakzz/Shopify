@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAllPosts } from "../../api/admin/fetchAllPosts";
 import { Loading } from "../../components";
+import { getAllPosts } from "../../redux/postsDataReducer";
 import Header from "../partials/Header";
 import Sidebar from "../partials/Sidebar";
 import Post from "./Post";
 
 function AllPosts({ blocked }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [posts, setPosts] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.postsData.data);
+  const loading = useSelector((state) => state.postsData.loading);
+  const error = useSelector((state) => state.postsData.error);
   useEffect(() => {
-    fetchAllPosts().then((response) => {
-      setPosts(response);
-      console.log(response);
-    });
+    dispatch(getAllPosts());
   }, []);
 
   return (
@@ -24,7 +28,8 @@ function AllPosts({ blocked }) {
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         {/*  Site header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {!posts && <Loading />}
+        {loading && <Loading />}
+        {error && error}
         <main>
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
             <div className="col-span-full xl:col-span-8 bg-white shadow-lg rounded-sm border border-slate-200">
@@ -44,9 +49,7 @@ function AllPosts({ blocked }) {
                           <div className="font-semibold text-center">No</div>
                         </th>
                         <th className="p-2">
-                          <div className="font-semibold text-left">
-                            image
-                          </div>
+                          <div className="font-semibold text-left">image</div>
                         </th>
                         <th className="p-2">
                           <div className="font-semibold text-center">
@@ -78,9 +81,8 @@ function AllPosts({ blocked }) {
                     {/* Table body */}
                     <tbody className="text-sm font-medium divide-y divide-slate-100">
                       {/* Row */}
-                      {posts &&
-                        posts.map((post, index) => (
-                            
+                      {data &&
+                        data.map((post, index) => (
                           <Post post={post} idx={index} />
                         ))}
                     </tbody>

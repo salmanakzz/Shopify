@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { RemoveFriendRequest } from "../../api/RemoveFriendRequest";
 import { AddFriend } from "../../api/AddFriend";
 
-function RequestCard() {
+function RequestCard({ friends, setFriends }) {
   const navigate = useNavigate();
 
   const { currentUser, setProfileUser } = useContext(ContextUser);
@@ -38,13 +38,13 @@ function RequestCard() {
     });
   };
 
-  const addToFriends = (currentUserId, requesterId) => {
-    AddFriend(currentUserId, requesterId).then((result)=>{
+  const addToFriends = (currentUserId, requesterId, requester) => {
+    AddFriend(currentUserId, requesterId).then((result) => {
       setFriendRequests(
         FriendRequests.filter((obj) => obj._id !== requesterId)
       );
-      console.log(result);
-    })
+      setFriends([...friends, requester]);
+    });
   };
 
   return (
@@ -72,7 +72,11 @@ function RequestCard() {
                 <div className="left">
                   <img
                     onClick={() => navigateProfile(requester)}
-                    src={requester?.profilePictureUrl ? requester.profilePictureUrl : DefaultProfile}
+                    src={
+                      requester?.profilePictureUrl
+                        ? requester.profilePictureUrl
+                        : DefaultProfile
+                    }
                     alt=""
                     className="requester-img"
                   />
@@ -89,7 +93,9 @@ function RequestCard() {
                   <PersonAddAlt1Icon
                     className="request-add-btn"
                     style={{ fill: "#0066ed" }}
-                    onClick={() => addToFriends(currentUser._id, requester._id)}
+                    onClick={() =>
+                      addToFriends(currentUser._id, requester._id, requester)
+                    }
                   />
                   <ClearIcon
                     onClick={() =>

@@ -4,12 +4,9 @@ import Container from "@mui/material/Container";
 import "./FriendsCard.css";
 import DefaultProfile from '../../assets/images/DefaultProfile.png'
 import MapsUgcIcon from "@mui/icons-material/MapsUgc";
-import { fetchFriends } from "../../api/fetchFriends";
-import { ContextUser } from "../../store/MainContext";
 
-function FriendsCard({ page ,setFriendUser}) {
-  const { currentUser } = useContext(ContextUser);
-  const [friends, setFriends] = useState(null)
+function FriendsCard({ page ,setFriendUser, friends}) {
+
   useEffect(() => {
     if (page === "profile") {
       window.onscroll = function () {
@@ -27,12 +24,6 @@ function FriendsCard({ page ,setFriendUser}) {
     }
   }, []);
 
-  useEffect(() => {
-   fetchFriends(currentUser._id).then(({friendsArr})=>{
-    setFriends(friendsArr);
-   })
-  }, [])
-  
 
   return (
     <div className="friends-card">

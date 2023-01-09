@@ -4,6 +4,8 @@ import User from "./modules/User";
 import AllPostsContext from "./store/AllPostContext";
 import MainContext from "./store/MainContext";
 import Admin from "./modules/Admin";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 function App() {
   return (
@@ -12,7 +14,9 @@ function App() {
         <AllPostsContext>
           <User />
         </AllPostsContext>
-        <Admin />
+        <Provider store={store}>
+          <Admin />
+        </Provider>
       </MainContext>
     </div>
   );

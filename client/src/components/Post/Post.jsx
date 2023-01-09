@@ -110,7 +110,6 @@ export const Post = ({ data, idx }) => {
       setEditPostId(null);
     });
   };
-
   const handleDelete = (postId) => {
     SwallFire("Deleting...");
     DeletePost(id, postId).then((result) => {
@@ -143,6 +142,8 @@ export const Post = ({ data, idx }) => {
 
   const hangleCommentSubmit = (userId, postId, postUserId, comment) => {
     AddComment(userId, postId, postUserId, comment).then((result) => {
+      var inputCom = document.getElementById("input-comment");
+      inputCom.value = ''
       setPostComments(result);
     });
   };
@@ -365,6 +366,7 @@ export const Post = ({ data, idx }) => {
               <input
                 type="text"
                 className="bg-[#e2e6ed] rounded-full ml-1 w-full text-[.87rem] custom-comment p-2 outline-0 border-0"
+                id="input-comment"
                 placeholder="Write a comment..."
                 onChange={(e) => setComment(e.target.value)}
               />
