@@ -17,6 +17,9 @@ import { useForm } from "react-hook-form";
 import Axios from "../../axios/axios";
 import Alert from "@mui/material/Alert";
 import { useSnackbar } from "notistack";
+import GoogleIcon from "@mui/icons-material/Google";
+import { googleSignIn } from "../../firebase/firebase";
+import { googleUserSignIn } from "../../api/googleUserRegister";
 
 function Copyright(props) {
   return (
@@ -55,8 +58,8 @@ export default function Login({ user, url }) {
             navigate("/");
             return;
           } else if (data.status === "error" && data.error === "userBlocked") {
-            handleClickVariant("Your account is temporarly blocked!","error")
-            return
+            handleClickVariant("Your account is temporarly blocked!", "error");
+            return;
           }
           setInvalid(true);
         })
@@ -87,6 +90,43 @@ export default function Login({ user, url }) {
         horizontal: "right",
       },
     });
+  };
+
+  const handleGoogleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      await googleSignIn().then(async (data) => {
+        const { email, firstName, lastName } = data?._tokenResponse;
+        const userData = {
+          firstname: firstName,
+          lastname: lastName,
+          email,
+        };
+        if (userData) {
+          await googleUserSignIn(userData).then((data) => {
+            console.log(data);
+            if (data.user) {
+              document.cookie = `token=${data.token}`;
+              document.cookie = `refreshToken=${data.refreshToken}`;
+              navigate("/");
+              return;
+            } else if (
+              data.status === "error" &&
+              data.error === "userBlocked"
+            ) {
+              handleClickVariant(
+                "Your account is temporarly blocked!",
+                "error"
+              );
+              return;
+            }
+            navigate("/login");
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -184,6 +224,13 @@ export default function Login({ user, url }) {
               >
                 Login
               </Button>
+              <div
+                onClick={handleGoogleSignIn}
+                className="flex justify-center items-center gap-1 mb-1 cursor-pointer"
+              >
+                <GoogleIcon className="!fill-[#e50000]" />
+                Signin with Google
+              </div>
               <Grid container>
                 <Grid item xs>
                   <Link className="a-link">Forgot password?</Link>

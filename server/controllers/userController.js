@@ -61,6 +61,19 @@ const userSignup = (req, res) => {
     });
 };
 
+// google user register route controlling
+const googleUserReg = (req, res) => {
+  authHelper
+    .googleUserRegister(req.body)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((error) => {
+      res.json(error);
+      console.log(error);
+    });
+};
+
 // user login route controlling
 const userLogin = (req, res) => {
   authHelper
@@ -194,9 +207,9 @@ const verifyNumber = (req, res) => {
 
 // verify otp route controlling
 const verifyOtp = (req, res) => {
-  const { requestId, otp, userDetails } = req.body;
+  const { userDetails } = req.body;
   authHelper
-    .verifyUserOtp(requestId, otp, userDetails)
+    .verifyUserOtp( userDetails)
     .then((response) => {
       res.json(response);
     })
@@ -318,9 +331,9 @@ const fetchSuggestions = (req, res) => {
 
 // user reporting route controlling
 const submitReport = (req, res) => {
-  const {currentUserId, profileUserId } = req.body;
+  const { currentUserId, profileUserId } = req.body;
   userHelper
-    .submitUserReport(currentUserId,profileUserId)
+    .submitUserReport(currentUserId, profileUserId)
     .then((response) => {
       res.json(response);
     })
@@ -331,9 +344,9 @@ const submitReport = (req, res) => {
 
 // user remove report route controlling
 const removeReport = (req, res) => {
-  const {currentUserId, profileUserId } = req.body;
+  const { currentUserId, profileUserId } = req.body;
   userHelper
-    .removeUserReport(currentUserId,profileUserId)
+    .removeUserReport(currentUserId, profileUserId)
     .then((response) => {
       res.json(response);
     })
@@ -383,7 +396,7 @@ const fetchUsers = (req, res) => {
 // upload user profilePicture route controlling
 const uploadProfilePicture = (req, res) => {
   userHelper
-    .uploadUserProfilePicture(req.body,req.file)
+    .uploadUserProfilePicture(req.body, req.file)
     .then((response) => {
       res.json(response);
     })
@@ -404,11 +417,10 @@ const fetchAllPosts = (req, res) => {
     });
 };
 
-
-
 module.exports = {
   userVerified,
   userSignup,
+  googleUserReg,
   userLogin,
   submitPost,
   fetchPostDatas,
@@ -435,5 +447,5 @@ module.exports = {
   fetchFriends,
   fetchUsers,
   uploadProfilePicture,
-  fetchAllPosts
+  fetchAllPosts,
 };

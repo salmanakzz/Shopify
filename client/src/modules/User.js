@@ -31,9 +31,13 @@ function User() {
           exact
           element={<SignupPage user={true} url={userSignup} />}
         />
-        <Route element={<PrivateRoutes authUrl={userAuth} user={true}/>}>
+        <Route element={<PrivateRoutes path="/" authUrl={userAuth} user={true}/>}>
           <Route path="/" exact element={<HomePage user={true} />} />
+        </Route>
+        <Route element={<PrivateRoutes path="/profile" authUrl={userAuth} user={true}/>}>
           <Route path="/profile" exact element={<ProfilePage user={true} />} />
+        </Route>
+        <Route element={<PrivateRoutes path="/chats" authUrl={userAuth} user={true}/>}>
           <Route path="/chats" exact element={<ChatsPage user={true} />} />
         </Route>
       </Routes>

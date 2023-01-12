@@ -8,6 +8,7 @@ export const accessUserRequestUrl = '/api/requset-access-token'
 // urls related to the user
 export const userLogin = "/api/login";
 export const userSignup = "/api/signup";
+export const googleUserRegister = "/api/google-user-register";
 export const submitPost = "/api/submit-post";
 export const fetchPostDatas = '/api/fecth-posts'
 export const deletePostUrl = '/api/delete-post'

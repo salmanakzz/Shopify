@@ -31,6 +31,7 @@ const {
   uploadProfilePicture,
   removeReport,
   fetchAllPosts,
+  googleUserReg,
 } = require("../controllers/userController");
 const upload = require("../middlewares/imageUpload");
 const verifyJWT = require("../middlewares/verifyJWT");
@@ -47,6 +48,9 @@ router.post("/api/login", userLogin);
 
 // user signup route
 router.post("/api/signup", userSignup);
+
+// google user signup route
+router.post("/api/google-user-register", googleUserReg);
 
 // user submit post route
 router.post("/api/submit-post", upload.single("image"), submitPost);

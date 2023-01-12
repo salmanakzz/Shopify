@@ -150,7 +150,6 @@ export const Post = ({ data, idx }) => {
 
   const navigateProfile = (postUser) => {
     setProfileUser(postUser);
-    window.scrollTo({ top: 0, behavior: "smooth" });
     navigate("/profile");
   };
   const profilePopupRef = useRef();

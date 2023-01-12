@@ -42,12 +42,12 @@ function ProfileHeadSection() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { currentUser, profileUser, setProfileUser } = useContext(ContextUser);
   const { profilePostDatas } = useContext(ContextAllPosts);
-  const { _id } = profileUser ? profileUser : currentUser;
+  const { _id } = profileUser?._id ? profileUser : currentUser;
 
   const [profileUserDetails, setProfileUserDetails] = useState(
-    profileUser ? profileUser : currentUser
+    profileUser?._id ? profileUser : currentUser
   );
-
+  console.log(currentUser, "fddddddddsgsdf", profileUser);
   const [profilePicture2, setProfilePicture2] = useState(
     profileUserDetails?.profilePictureUrl
       ? profileUserDetails.profilePictureUrl
@@ -234,11 +234,11 @@ function ProfileHeadSection() {
       },
     });
   };
-  
+
   const [story, setStory] = useState(null);
   const [storyFile, setStoryFile] = useState(null);
-  const [storyAdd, setStoryAdd] = useState(false); 
-    const [currentUserStory, setCurrentUserStory] = useState(null);
+  const [storyAdd, setStoryAdd] = useState(false);
+  const [currentUserStory, setCurrentUserStory] = useState(null);
   const storyRef = useRef();
 
   if (currentUserStory && currentUserStory[0]?.user) {
@@ -249,7 +249,6 @@ function ProfileHeadSection() {
 
       profileImage: profilePictureUrl ? profilePictureUrl : DefaultProfile,
     };
-    console.log(Heading);
     for (const storyObj of currentUserStory[0].stories) {
       storyObj.header = Heading;
       storyObj.header.subheading = format(storyObj.createdAt);
@@ -305,7 +304,7 @@ function ProfileHeadSection() {
         if (status === "ok" && storyAdded) {
           setStory(null);
           Swal.close();
-          setStoryAdd(true)
+          setStoryAdd(true);
           handleClickVariant("Story addedd succesfully!", "success");
         } else {
           Swal.close();
@@ -328,7 +327,6 @@ function ProfileHeadSection() {
       setCurrentUserStory(
         stories && stories.filter((story) => story.userId === currentUser._id)
       );
-      console.log(stories);
     });
   }, [storyAdd]);
 
@@ -480,20 +478,24 @@ function ProfileHeadSection() {
                     <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center hover:pt-1 profile-img-style">
                       <div className="relative ">
                         <div>
-
-                        <img
-                          alt="..."
-                          src={
-                            profilePicture2 ? profilePicture2 : DefaultProfile
-                          }
-                          onClick={
-                            currentUserStory && currentUserStory[0]?.stories?.length > 0
-                              ? handleOpenStory
-                              : () => storyRef.current.click()
-                          }
-                          id={currentUserStory && currentUserStory[0].stories?.length > 0 && 'profile-story-circle'}
-                          className="cursor-pointer bg-white shadow-xl rounded-full h-auto align-middle  absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-                        />
+                          <img
+                            alt="..."
+                            src={
+                              profilePicture2 ? profilePicture2 : DefaultProfile
+                            }
+                            onClick={
+                              currentUserStory &&
+                              currentUserStory[0]?.stories?.length > 0
+                                ? handleOpenStory
+                                : () => storyRef.current.click()
+                            }
+                            id={
+                              currentUserStory &&
+                              currentUserStory[0]?.stories?.length > 0 &&
+                              "profile-story-circle"
+                            }
+                            className="cursor-pointer bg-white shadow-xl rounded-full h-auto align-middle  absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+                          />
                         </div>
                         <div class="mr-[5px] hover:bg-[#1976d221] rounded-lg cursor-pointer relative mt-[4rem] left-[42px]">
                           {_id === currentUser._id && (
@@ -531,57 +533,67 @@ function ProfileHeadSection() {
                           )
                         ) : (
                           <>
-                            <Tooltip title={'Add Story'} className='profile-story-tooltip'>
-                            <AddCircleIcon className="profile-add-story-btn" onClick={()=> storyRef.current.click()}/>
+                            <Tooltip
+                              title={"Add Story"}
+                              className="profile-story-tooltip"
+                            >
+                              <AddCircleIcon
+                                className="profile-add-story-btn"
+                                onClick={() => storyRef.current.click()}
+                              />
                             </Tooltip>
-                          
-                            {currentUserStory && currentUserStory[0]?.stories && (
-          <Modal
-            className="w-[auto]"
-            open={openStory}
-            onClose={handleCloseStory}
-            aria-labelledby="parent-modal-title"
-            aria-describedby="parent-modal-description"
-          >
-            <Box
-              sx={{
-                ...style2,
-                width: "auto",
-                padding: "0",
-                borderRadius: ".5rem",
-              }}
-            >
-              <Stories
-                stories={currentUserStory && currentUserStory[0].stories}
-                defaultInterval={1500}
-                // width={'100%'}
-                // height={'100vh'}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  background: "red",
-                  cursor: "pointer",
-                }}
-                storyStyles={storyContent}
-                loop={false}
-                keyboardNavigation={true}
-                isPaused={() => {}}
-                currentIndex={() => {}}
-                onStoryStart={() => {}}
-                onStoryEnd={() => {}}
-                onAllStoriesEnd={onAllStoriesEndHandler}
-              />
-            </Box>
-          </Modal>
-        )}
+
+                            {currentUserStory &&
+                              currentUserStory[0]?.stories && (
+                                <Modal
+                                  className="w-[auto]"
+                                  open={openStory}
+                                  onClose={handleCloseStory}
+                                  aria-labelledby="parent-modal-title"
+                                  aria-describedby="parent-modal-description"
+                                >
+                                  <Box
+                                    sx={{
+                                      ...style2,
+                                      width: "auto",
+                                      padding: "0",
+                                      borderRadius: ".5rem",
+                                    }}
+                                  >
+                                    <Stories
+                                      stories={
+                                        currentUserStory &&
+                                        currentUserStory[0].stories
+                                      }
+                                      defaultInterval={1500}
+                                      // width={'100%'}
+                                      // height={'100vh'}
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        background: "red",
+                                        cursor: "pointer",
+                                      }}
+                                      storyStyles={storyContent}
+                                      loop={false}
+                                      keyboardNavigation={true}
+                                      isPaused={() => {}}
+                                      currentIndex={() => {}}
+                                      onStoryStart={() => {}}
+                                      onStoryEnd={() => {}}
+                                      onAllStoriesEnd={onAllStoriesEndHandler}
+                                    />
+                                  </Box>
+                                </Modal>
+                              )}
                             <div style={{ display: "none" }}>
-                  <input
-                    type="file"
-                    name="story"
-                    ref={storyRef}
-                    onChange={onStoryChange}
-                  />
-                </div>
+                              <input
+                                type="file"
+                                name="story"
+                                ref={storyRef}
+                                onChange={onStoryChange}
+                              />
+                            </div>
                             {story && (
                               <Modal
                                 className="w-[auto]"

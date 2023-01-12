@@ -1,14 +1,9 @@
 // user auth operations
 
 const user = require("../../config/models/userModel");
+const googleUser = require("../../config/models/googleUserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
-const { Vonage } = require("@vonage/server-sdk");
-const vonage = new Vonage({
-  apiKey: process.env.VONAGE_API,
-  apiSecret: process.env.VONAGE_SECRET,
-});
 
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
@@ -20,8 +15,6 @@ const s3 = new S3Client({
   },
   region: process.env.BUCKET_REGION,
 });
-
-let REQUEST_ID;
 
 module.exports = {
   // user insert mongoose operation
@@ -37,6 +30,77 @@ module.exports = {
         .catch((err) => {
           reject(err);
         });
+    });
+  },
+  // googleUser insert mongoose operation
+  googleUserRegister: ({ email, firstname, lastname }) => {
+    return new Promise(async (resolve, reject) => {
+      let userData = await user.findOne({ email });
+      if (!userData) {
+        const newUser = new googleUser({
+          firstname,
+          lastname,
+          email,
+          blocked: false,
+        });
+        userData = await newUser.save();
+      }
+      if (userData) {
+        const {
+          _id,
+          firstname,
+          lastname,
+          followers,
+          following,
+          friends,
+          friendRequest,
+          profilePicture,
+        } = userData;
+
+        const data = {
+          time: Date(),
+          _id,
+          firstname,
+          lastname,
+          followers,
+          following,
+          friends,
+          friendRequest,
+          profilePicture,
+        };
+
+        if (profilePicture) {
+          const getObjectParams = {
+            Bucket: process.env.BUCKET_NAME,
+            Key: profilePicture,
+          };
+          const command = new GetObjectCommand(getObjectParams);
+          const url = await getSignedUrl(s3, command, { expiresIn: 60 });
+          data.profilePictureUrl = url;
+        }
+
+        if (userData.blocked) {
+          reject({ status: "error", error: "userBlocked" });
+        } else {
+          const token = jwt.sign({ data }, process.env.JWT_ACCESS_SECRET, {
+            expiresIn: "30m",
+          });
+          const refreshToken = jwt.sign(
+            { _id },
+            process.env.JWT_REFRESH_SECRET,
+            {
+              expiresIn: "1y",
+            }
+          );
+          resolve({
+            status: "ok",
+            user: true,
+            token: token,
+            refreshToken,
+            result: userData,
+          });
+        }
+      }
     });
   },
 
@@ -78,34 +142,47 @@ module.exports = {
           const url = await getSignedUrl(s3, command, { expiresIn: 60 });
           data.profilePictureUrl = url;
         }
-
-        bcrypt.compare(password, userDetails.password).then((status) => {
-          if (status) {
-            if (userDetails.blocked) {
-              reject({ status: "error", error: "userBlocked" });
+        if (userDetails.password) {
+          bcrypt.compare(password, userDetails.password).then((status) => {
+            if (status) {
+              if (userDetails.blocked) {
+                reject({ status: "error", error: "userBlocked" });
+              } else {
+                const token = jwt.sign(
+                  { data },
+                  process.env.JWT_ACCESS_SECRET,
+                  {
+                    expiresIn: "30m",
+                  }
+                );
+                const refreshToken = jwt.sign(
+                  { _id },
+                  process.env.JWT_REFRESH_SECRET,
+                  {
+                    expiresIn: "1y",
+                  }
+                );
+                resolve({
+                  status: "ok",
+                  user: true,
+                  token: token,
+                  refreshToken,
+                  result: userDetails,
+                });
+              }
             } else {
-              const token = jwt.sign({ data }, process.env.JWT_ACCESS_SECRET, {
-                expiresIn: "30m",
-              });
-              const refreshToken = jwt.sign(
-                { _id },
-                process.env.JWT_REFRESH_SECRET,
-                {
-                  expiresIn: "1y",
-                }
-              );
-              resolve({
-                status: "ok",
-                user: true,
-                token: token,
-                refreshToken,
-                result: userDetails,
+              reject({
+                status: "error",
+                error: "invalid username or password",
               });
             }
-          } else {
-            reject({ status: "error", error: "invalid username or password" });
-          }
-        });
+          });
+        } else {
+          reject({
+            status: "error",
+            error: "invalid username or password",
+          });
+        }
       } else {
         reject({ status: "error", error: "user not found" });
       }
@@ -116,20 +193,11 @@ module.exports = {
       try {
         const userDetails = await user.findOne({ mobile });
         if (userDetails) {
-          vonage.verify
-            .start({
-              number: "91" + mobile,
-              brand: "Shopify",
-            })
-            .then((resp) =>
-              resolve({
-                status: "ok",
-                numberRegistered: true,
-                request_id: resp.request_id,
-                userDetails,
-              })
-            )
-            .catch((err) => console.error(err));
+          resolve({
+            status: "ok",
+            numberRegistered: true,
+            userDetails,
+          });
         } else {
           reject({ status: "error", numberRegistered: false });
         }
@@ -138,44 +206,62 @@ module.exports = {
       }
     });
   },
-  verifyUserOtp: (requestId, otpCode, userDetails) => {
-    return new Promise((resolve, reject) => {
-      const { otp } = otpCode;
-      const { _id, firstname, lastname } = userDetails;
-      vonage.verify
-        .check(requestId, parseInt(otp))
-        .then((resp) => {
-          setTimeout(() => {
-            vonage.verify
-              .cancel(requestId)
-              .then((resp) => console.log(resp))
-              .catch((err) => console.error(err));
-          }, 60000);
-          console.log(resp);
-          if (resp.status === "0") {
-            const data = {
-              time: Date(),
-              id: _id,
-              firstname,
-              lastname,
-            };
-            const token = jwt.sign({ data }, process.env.JWT_ACCESS_SECRET, {
-              expiresIn: "30m",
-            });
-            resolve({
-              status: "ok",
-              otpVerified: true,
-              token: token,
-              result: userDetails,
-            });
-            return;
-          }
-          reject({ status: "error", otpVerified: false });
-        })
-        .catch((err) => {
-          console.error(err);
-          reject({ status: "error", error: err, otpVerified: false });
+  verifyUserOtp: (userDetails) => {
+    return new Promise(async (resolve, reject) => {
+      console.log(userDetails);
+      const {
+        _id,
+        firstname,
+        lastname,
+        followers,
+        following,
+        friends,
+        friendRequest,
+        profilePicture,
+      } = userDetails;
+      const data = {
+        time: Date(),
+        _id,
+        firstname,
+        lastname,
+        followers,
+        following,
+        friends,
+        friendRequest,
+        profilePicture,
+      };
+
+      if (profilePicture) {
+        const getObjectParams = {
+          Bucket: process.env.BUCKET_NAME,
+          Key: profilePicture,
+        };
+        const command = new GetObjectCommand(getObjectParams);
+        const url = await getSignedUrl(s3, command, { expiresIn: 60 });
+        data.profilePictureUrl = url;
+      }
+
+      if (userDetails.blocked) {
+        reject({ status: "error", error: "userBlocked" });
+      } else {
+        const token = jwt.sign({ data }, process.env.JWT_ACCESS_SECRET, {
+          expiresIn: "30m",
         });
+        const refreshToken = jwt.sign({ _id }, process.env.JWT_REFRESH_SECRET, {
+          expiresIn: "1y",
+        });
+        resolve({
+          status: "ok",
+          otpVerified: true,
+          token: token,
+          refreshToken,
+          result: userDetails,
+        });
+      }
+      resolve({
+        status: "error",
+        otpVerified: false,
+      });
     });
   },
   generateTokens: (currentUserId) => {

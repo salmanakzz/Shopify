@@ -3,7 +3,6 @@ import { Navigate, Outlet } from "react-router-dom";
 
 function TokenCheck({ tokenParam, user }) {
   const token = tokenParam;
-
   return user ? (
     token ? (
       <Outlet />

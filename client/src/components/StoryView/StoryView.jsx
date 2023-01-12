@@ -68,7 +68,6 @@ function StoryView({ storyAdd, setStoryAdd }) {
 
       profileImage: profilePictureUrl ? profilePictureUrl : DefaultProfile,
     };
-    console.log(Heading);
     for (const storyObj of currentUserStory[0].stories) {
       storyObj.header = Heading;
       storyObj.header.subheading = format(storyObj.createdAt);

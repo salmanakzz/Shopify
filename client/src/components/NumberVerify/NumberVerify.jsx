@@ -20,6 +20,7 @@ import Alert from "@mui/material/Alert";
 import { Modal } from "@mui/material";
 import OtpVerify from "../OtpVerify/OtpVerify";
 import { VerifyNumber } from "../../api/VerifyNumber";
+import { setUpRecaptcha } from "../../firebase/firebase";
 
 const theme = createTheme();
 
@@ -28,6 +29,7 @@ function NumberVerify() {
   const [open, setOpen] = useState(false);
   const [requestId, setRequestId] = useState("");
   const [userDetails, setUserDetails] = useState("");
+  const [confirmObj, setConfirmObj] = useState("");
 
   const {
     register,
@@ -35,17 +37,25 @@ function NumberVerify() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (mobile) => {
+  const onSubmit = ({ mobile }) => {
     if (mobile) {
-      VerifyNumber(mobile).then((result) => {
+      VerifyNumber({ mobile }).then(async (result) => {
         console.log(result);
-        const { status, numberRegistered, request_id, userDetails } = result;
+        const { status, numberRegistered, userDetails } = result;
+        setInvalid(false);
         if (status === "ok" && numberRegistered) {
-          setUserDetails(userDetails);
-          setRequestId(request_id);
-          setInvalid(false);
-          setOpen(true);
-          return;
+          try {
+            const response = await setUpRecaptcha("+91" + mobile);
+            setInvalid(false);
+            console.log(response);
+            setConfirmObj(response);
+            setUserDetails(userDetails);
+            setOpen(true);
+            return;
+          } catch (error) {
+            console.log(error);
+            return
+          }
         }
         setInvalid(true);
       });
@@ -54,7 +64,7 @@ function NumberVerify() {
 
   return (
     <div className="number-verify">
-      {open && <OtpVerify requestId={requestId} userDetails={userDetails} />}
+      {open && <OtpVerify confirmObj={confirmObj} userDetails={userDetails} />}
       <ThemeProvider theme={theme}>
         <Container
           component="main"
@@ -114,6 +124,7 @@ function NumberVerify() {
                   Number contains only 10 numbers
                 </p>
               )}
+
               <Button
                 type="submit"
                 fullWidth
@@ -123,6 +134,7 @@ function NumberVerify() {
               >
                 Check
               </Button>
+              <div id="recaptcha-container" />
             </Box>
             {invalid && (
               <Alert sx={{ mt: "2rem" }} severity="error">

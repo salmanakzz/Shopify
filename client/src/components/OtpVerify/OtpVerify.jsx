@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { VerifyOTP } from "../../api/VerifyOtp";
 import "./OtpVerify.css";
 
-function OtpVerify({ requestId, userDetails }) {
+function OtpVerify({ userDetails, confirmObj }) {
   const navigate = useNavigate();
   const [invalid, setInvalid] = useState(false);
 
@@ -22,18 +22,25 @@ function OtpVerify({ requestId, userDetails }) {
     formState: { errors },
   } = useForm();
 
-  const onVerify = (otp) => {
+  const onVerify = async ({ otp }) => {
     if (otp) {
-      VerifyOTP(requestId, otp, userDetails).then((result) => {
-        console.log(result);
-        const { token, status, otpVerified } = result;
-        if (status === "ok" && otpVerified) {
-          document.cookie = `token=${token}`;
-          navigate("/");
-          return;
-        }
+      try {
+        await confirmObj.confirm(otp);
+        VerifyOTP(userDetails).then((result) => {
+          console.log(result);
+          const { refreshToken, token, status, otpVerified } = result;
+          if (status === "ok" && otpVerified) {
+            document.cookie = `token=${token}`;
+            document.cookie = `refreshToken=${refreshToken}`;
+            navigate("/");
+            return;
+          }
+          setInvalid(true);
+        });
+      } catch (error) {
         setInvalid(true);
-      });
+        console.log(error);
+      }
     }
   };
   return (
