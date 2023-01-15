@@ -233,7 +233,7 @@ export default function Login({ user, url }) {
               </div>
               <Grid container>
                 <Grid item xs>
-                  <Link className="a-link">Forgot password?</Link>
+                  <Link  to={"/forgot-password"} className="a-link">Forgot password?</Link>
                 </Grid>
                 <Grid item>
                   <Link to="/signup" className="a-link">

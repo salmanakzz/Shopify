@@ -16,6 +16,8 @@ const s3 = new S3Client({
   region: process.env.BUCKET_REGION,
 });
 
+const nodemailer = require('nodemailer');
+
 module.exports = {
   // user insert mongoose operation
   doRegister: (userData) => {
@@ -185,6 +187,103 @@ module.exports = {
         }
       } else {
         reject({ status: "error", error: "user not found" });
+      }
+    });
+  },
+  forgotPasswordSet: (email) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const userDetails = await user.findOne({ email });
+        if (userDetails) {
+          const secret = process.env.JWT_RESET_PASS_SECRET;
+          const token = jwt.sign(
+            { email: userDetails.email, id: userDetails._id },
+            secret,
+            {
+              expiresIn: "5m",
+            }
+          );
+
+          const link = `http://localhost:3000/reset-password/${userDetails._id}/${token}`;
+
+          var transporter = nodemailer.createTransport({
+
+            service: 'gmail',
+            auth: {
+              user: process.env.FORGOT_SEND_EMAIL,
+              pass: process.env.FORGOT_SEND_PASS
+            }
+          });
+          
+          var mailOptions = {
+            from: `"Shopify"<${process.env.FORGOT_SEND_EMAIL}>`,
+            to: email,
+            subject: 'Shopify account password Reset',
+            text: link,
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+
+          console.log(link);
+
+          resolve({
+            status: "ok",
+            emailRegistered: true,
+            userDetails,
+          });
+        } else {
+          reject({ status: "error", emailRegistered: false });
+        }
+      } catch (err) {
+        reject({ error: err });
+      }
+    });
+  },
+  resetUserPassword: (id, token) => {
+    return new Promise(async (resolve, reject) => {
+      const userDetails = await user.findOne({ _id: id });
+      if (!userDetails) {
+        return reject({ status: "error", emailRegistered: false });
+      }
+      const secret = process.env.JWT_RESET_PASS_SECRET;
+      try {
+        const verify = jwt.verify(token, secret);
+        resolve({ status: "ok", verified: true });
+      } catch (error) {
+        reject({ status: "error", verified: false, error });
+      }
+    });
+  },
+  confirmResetUserPassword: (id, token, newPassword) => {
+    return new Promise(async (resolve, reject) => {
+      const userDetails = await user.findOne({ _id: id });
+      if (!userDetails) {
+        return reject({ status: "error", emailRegistered: false });
+      }
+      const secret = process.env.JWT_RESET_PASS_SECRET;
+      try {
+        const verify = jwt.verify(token, secret);
+        const encryptPassword = await bcrypt.hash(newPassword, 10);
+        await user.updateOne(
+          { _id: id },
+          { $set: { password: encryptPassword } }
+        );
+        resolve({
+          status: "ok",
+          passwordUpdated: true,
+        });
+      } catch (error) {
+        resolve({
+          status: "error",
+          passwordUpdated: false,
+          error,
+        });
       }
     });
   },

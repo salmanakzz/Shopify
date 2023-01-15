@@ -4,7 +4,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   RecaptchaVerifier,
-  signInWithPhoneNumber
+  signInWithPhoneNumber,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -34,5 +35,9 @@ export function setUpRecaptcha(number) {
     auth
   );
   recaptchaVerifier.render();
-  return signInWithPhoneNumber(auth, number, recaptchaVerifier)
+  return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+}
+
+export function resetPassword(email) {
+  return sendPasswordResetEmail(email);
 }

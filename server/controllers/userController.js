@@ -205,11 +205,55 @@ const verifyNumber = (req, res) => {
     });
 };
 
+// verify number route controlling
+const forgotPassword = (req, res) => {
+  const { email } = req.body;
+  authHelper
+    .forgotPasswordSet(email)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.json(err);
+      console.log(err);
+    });
+};
+
+// reset user password controlling
+const resetPassword = (req, res) => {
+  const { id, token } = req.params;
+  authHelper
+    .resetUserPassword(id, token)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.json(err);
+      console.log(err);
+    });
+};
+
+//confirm reset user password controlling
+const confirmResetPassword = (req, res) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+
+  authHelper
+    .confirmResetUserPassword(id, token, password)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.json(err);
+      console.log(err);
+    });
+};
+
 // verify otp route controlling
 const verifyOtp = (req, res) => {
   const { userDetails } = req.body;
   authHelper
-    .verifyUserOtp( userDetails)
+    .verifyUserOtp(userDetails)
     .then((response) => {
       res.json(response);
     })
@@ -448,4 +492,7 @@ module.exports = {
   fetchUsers,
   uploadProfilePicture,
   fetchAllPosts,
+  forgotPassword,
+  resetPassword,
+  confirmResetPassword,
 };

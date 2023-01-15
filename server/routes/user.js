@@ -32,6 +32,10 @@ const {
   removeReport,
   fetchAllPosts,
   googleUserReg,
+  verifyEmail,
+  forgotPassword,
+  resetPassword,
+  confirmResetPassword,
 } = require("../controllers/userController");
 const upload = require("../middlewares/imageUpload");
 const verifyJWT = require("../middlewares/verifyJWT");
@@ -78,6 +82,15 @@ router.post("/api/fetch-comments", verifyJWT, fetchCommentDatas);
 
 // user verify mobile route
 router.post("/api/verify-number", verifyNumber);
+
+// user verify email route
+router.post("/api/forgot-password", forgotPassword);
+
+// user reset password route
+router.get("/api/reset-password/:id/:token", resetPassword);
+
+// user confirm reset password route
+router.post("/api/reset-password/:id/:token", confirmResetPassword);
 
 // user verify otp route
 router.post("/api/verify-otp", verifyOtp);

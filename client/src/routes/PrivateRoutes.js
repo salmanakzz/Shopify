@@ -29,6 +29,7 @@ function PrivateRoutes({ authUrl, user ,path}) {
         "x-accesss-token": getToken,
       },
     }).then(({ data }) => {
+      setAuth(true);
       console.log(data);
       if (user) {
         if (!data.auth && data.error?.message === "jwt expired") {
