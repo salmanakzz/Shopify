@@ -9,12 +9,11 @@ import { Typography } from "@mui/material";
 function Conversation({ data, currentUserId, online, searchUser }) {
   const [chatUserData, setChatUserData] = useState(null);
   useEffect(() => {
-    const chatUserId = data.members.find((id) => id !== currentUserId);
+    const chatUserId = data?.members?.find((id) => id !== currentUserId);
     getUserData(chatUserId).then(({ userData }) => {
       setChatUserData(userData);
     });
   }, []);
-
   return (
     <div className="conversation ml-1 mb-2">
       {searchUser ? (

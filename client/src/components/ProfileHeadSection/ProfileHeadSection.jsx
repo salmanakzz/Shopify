@@ -27,7 +27,7 @@ import { RemoveFriendRequest } from "../../api/RemoveFriendRequest";
 import { submitReport } from "../../api/submitReport";
 import { removeReport } from "../../api/removeReport";
 import CropEasy from "../crop/CropEasy";
-import { Crop } from "@mui/icons-material";
+import { Crop, CurrencyBitcoin } from "@mui/icons-material";
 import { uploadProfilePicture } from "../../api/uploadProfilePicture";
 import { ContextAllPosts } from "../../store/AllPostContext";
 import { useSnackbar } from "notistack";
@@ -36,6 +36,7 @@ import Swal from "sweetalert2";
 import { getStories } from "../../api/getStories";
 import Stories from "react-insta-stories";
 import { format } from "timeago.js";
+import { removeFriend } from "../../api/removeFriend";
 
 function ProfileHeadSection() {
   const { enqueueSnackbar } = useSnackbar();
@@ -47,6 +48,14 @@ function ProfileHeadSection() {
   const [profileUserDetails, setProfileUserDetails] = useState(
     profileUser?._id ? profileUser : currentUser
   );
+
+  useEffect(() => {
+    setProfileUserDetails(profileUser?._id ? profileUser : currentUser);
+    setProfilePicture2(
+      profileUser?.profilePictureUrl ? profileUser.profilePictureUrl : null
+    );
+  }, [profileUser]);
+
   console.log(currentUser, "fddddddddsgsdf", profileUser);
   const [profilePicture2, setProfilePicture2] = useState(
     profileUserDetails?.profilePictureUrl
@@ -62,6 +71,9 @@ function ProfileHeadSection() {
 
   const [friendRequested, setFriendRequested] = useState(
     profileUserDetails?.friendRequest?.includes(currentUser._id) ? true : false
+  );
+  const [friends, setFriends] = useState(
+    profileUserDetails?.friends?.includes(currentUser._id) ? true : false
   );
   const [followed, setFollowed] = useState(
     profileUserDetails?.followers?.includes(currentUser._id) ? true : false
@@ -119,6 +131,15 @@ function ProfileHeadSection() {
       console.log(result);
     });
   };
+
+  const handleRemoveFriend = (profileUserId, currentUserId) => {
+    removeFriend(profileUserId, currentUserId).then((result) => {
+      handleCloseUserMenu();
+      setFriends(false);
+      console.log(result);
+    });
+  };
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -710,6 +731,8 @@ function ProfileHeadSection() {
                                           _id,
                                           currentUser._id
                                         )
+                                      : friends
+                                      ? handleRemoveFriend(_id, currentUser._id)
                                       : handleFriendRequest(
                                           _id,
                                           currentUser._id
@@ -728,7 +751,9 @@ function ProfileHeadSection() {
                                   {setting === "Friend request?"
                                     ? followed
                                       ? friendRequested
-                                        ? "Friend requested"
+                                        ? "Remove friend request"
+                                        : friends
+                                        ? "Remove friend"
                                         : setting
                                       : ""
                                     : setting === "Report"

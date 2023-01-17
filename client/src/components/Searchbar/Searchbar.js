@@ -32,6 +32,7 @@ function Searchbar({ setSearchChatUsers, page }) {
   }, []);
 
   const handleSearch = (e) => {
+    console.log(friends);
     if (page === "chats") {
       const searcher = new JsonSearch(e.target.value && friends && friends, {
         indice: {
@@ -40,6 +41,7 @@ function Searchbar({ setSearchChatUsers, page }) {
         },
       });
       let foundObjects = searcher.query(e.target.value);
+      console.log(foundObjects);
       setSearchChatUsers(foundObjects);
     }else{
       if(!e.target.value){
@@ -56,6 +58,7 @@ function Searchbar({ setSearchChatUsers, page }) {
       console.log(foundObjects);
       setSearchedUsers(foundObjects);
       handleOpen();
+
     }
    
   };
@@ -65,6 +68,7 @@ function Searchbar({ setSearchChatUsers, page }) {
     setProfileUser(user);
     window.scrollTo({ top: 0, behavior: "smooth" });
     navigate("/profile");
+    handleClose()
   };
   return (
     <div className="searchbar">

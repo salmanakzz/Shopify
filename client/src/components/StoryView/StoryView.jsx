@@ -147,7 +147,7 @@ function StoryView({ storyAdd, setStoryAdd }) {
         <Box className="ps-box">
           <div className="story-share-body">
             <div
-              className="story"
+              className={currentUserStory && currentUserStory[0]?.stories?.length > 0 ? "story" : "story !border-solid !border-[3px] !border-[#fff]"}
               onClick={
                 currentUserStory && currentUserStory[0]?.stories?.length > 0
                   ? handleOpen

@@ -1,7 +1,7 @@
 // message routers
 
 const express = require("express");
-const { addMessage, fetchMessage } = require("../controllers/messageController");
+const { addMessage, fetchMessage, searchAndFetchMessage } = require("../controllers/messageController");
 const verifyJWT = require("../middlewares/verifyJWT");
 const router = express.Router();
 
@@ -10,5 +10,8 @@ router.post('/api/add-message',addMessage)
 
 // fetch message route
 router.get('/api/fetch-message/:chatId',fetchMessage)
+
+// search and fetch message route
+router.get('/api/search-fetch-message',searchAndFetchMessage)
 
 module.exports = router

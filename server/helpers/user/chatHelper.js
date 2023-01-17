@@ -21,7 +21,7 @@ module.exports = {
           const newChat = await memberss.save();
           resolve({ status: "ok", chatCreated: true, newChat });
         } else {
-          resolve({ status: "alreadyExists", chatCreated: false });
+          resolve({ status: "alreadyExists", chatCreated: false ,newChat:chat});
         }
       } catch (error) {
         reject({ status: "error", chatCreated: false, error });

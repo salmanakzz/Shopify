@@ -1,11 +1,11 @@
 import React from "react";
-import ChatCard from "../FriendsCard/FriendsCard";
+import FriendsCard from "../FriendsCard/FriendsCard";
 import "./ProfileLeftSide.css";
 
-function ProfileLeftSide() {
+function ProfileLeftSide({ friends }) {
   return (
     <div className="profile-left-side">
-      <ChatCard page={"profile"} />
+      <FriendsCard page={"profile"} friends={friends} />
     </div>
   );
 }

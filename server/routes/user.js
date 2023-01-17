@@ -36,6 +36,7 @@ const {
   forgotPassword,
   resetPassword,
   confirmResetPassword,
+  removeFriend,
 } = require("../controllers/userController");
 const upload = require("../middlewares/imageUpload");
 const verifyJWT = require("../middlewares/verifyJWT");
@@ -113,8 +114,11 @@ router.patch("/api/remove-friend-request", verifyJWT, removeFriendRequest);
 // fetch requests route
 router.get("/api/fetch-requests", verifyJWT, fetchRequests);
 
-// user friend route
+// add user friend route
 router.patch("/api/add-friend", verifyJWT, addFriend);
+
+// remove user friend route
+router.patch("/api/remove-friend", verifyJWT, removeFriend);
 
 // user suggestions route
 router.get("/api/fetch-Suggestions", verifyJWT, fetchSuggestions);

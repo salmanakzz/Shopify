@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -19,6 +19,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import { Button } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import { getUserData } from "../../api/getUserData";
+import { io } from "socket.io-client";
 
 const pages = ["Home", "Application"];
 const settings = ["Home", "Profile", "Settings", "Logout"];
@@ -33,14 +34,19 @@ function Navbar() {
 
   const navigate = useNavigate();
 
+  const socket = useRef();
+
   useEffect(() => {
    getUserData(currentUser._id).then(({userData})=>{
     setUser(userData)
    })
     
   }, [])
-  
 
+  useEffect(() => {
+    socket.current = io("http://localhost:8800");
+  }, [currentUser]);
+ 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -74,6 +80,7 @@ function Navbar() {
     handleCloseUserMenu();
     deleteCookie("token");
     deleteCookie("refreshToken");
+    socket.current.emit("logout-disconnect",currentUser._id)
     navigate("/login");
   };
 

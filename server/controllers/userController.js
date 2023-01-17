@@ -360,6 +360,21 @@ const addFriend = (req, res) => {
     });
 };
 
+
+// remove friend route controlling
+const removeFriend = (req, res) => {
+  const { currentUserId, profileUserId } = req.body;
+  userHelper
+    .removeFriendUser(currentUserId, profileUserId)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.json(err);
+      console.log(err);
+    });
+};
+
 //fetching suggestions route controlling
 const fetchSuggestions = (req, res) => {
   const { currentUserId } = req.query;
@@ -483,6 +498,7 @@ module.exports = {
   removeFriendRequest,
   fetchRequests,
   addFriend,
+  removeFriend,
   fetchSuggestions,
   requestAccessToken,
   submitReport,

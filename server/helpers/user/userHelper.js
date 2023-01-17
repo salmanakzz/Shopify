@@ -155,16 +155,16 @@ module.exports = {
           requestArr.push(element.request[0]);
         });
         for (const request of requestArr) {
-          if(request?.profilePicture){
-           const getObjectParams = {
-             Bucket: process.env.BUCKET_NAME,
-             Key: request.profilePicture,
-           };
-           const command = new GetObjectCommand(getObjectParams);
-           const url = await getSignedUrl(s3, command, { expiresIn: 60 });
-           request.profilePictureUrl = url;
+          if (request?.profilePicture) {
+            const getObjectParams = {
+              Bucket: process.env.BUCKET_NAME,
+              Key: request.profilePicture,
+            };
+            const command = new GetObjectCommand(getObjectParams);
+            const url = await getSignedUrl(s3, command, { expiresIn: 60 });
+            request.profilePictureUrl = url;
           }
-         }
+        }
         resolve(requestArr);
       } catch (err) {
         reject({ status: "error", fetchRequest: false, error: err });
@@ -212,6 +212,33 @@ module.exports = {
         });
     });
   },
+  // remove friend operation
+  removeFriendUser: (currentUserId, profileUserId) => {
+    console.log(currentUserId, profileUserId);
+    return new Promise((resolve, reject) => {
+      user
+        .updateOne(
+          { _id: ObjectId(currentUserId) },
+          { $pull: { friends: ObjectId(profileUserId) } }
+        )
+        .then(() => {
+          user
+            .updateOne(
+              { _id: ObjectId(profileUserId) },
+              { $pull: { friends: ObjectId(currentUserId) } }
+            )
+            .then(() => {
+              resolve({ status: "ok", friendRemoved: true });
+            })
+            .catch((err) => {
+              reject({ status: "error", friendRemoved: false, error: err });
+            });
+        })
+        .catch((err) => {
+          reject({ status: "error", friendRemoved: false, error: err });
+        });
+    });
+  },
 
   //fetch user suggestions operation
   fetchUserSuggestions: (currentUserId) => {
@@ -229,15 +256,15 @@ module.exports = {
         ]);
 
         for (const suggestion of suggestions) {
-         if(suggestion?.profilePicture){
-          const getObjectParams = {
-            Bucket: process.env.BUCKET_NAME,
-            Key: suggestion.profilePicture,
-          };
-          const command = new GetObjectCommand(getObjectParams);
-          const url = await getSignedUrl(s3, command, { expiresIn: 60 });
-          suggestion.profilePictureUrl = url;
-         }
+          if (suggestion?.profilePicture) {
+            const getObjectParams = {
+              Bucket: process.env.BUCKET_NAME,
+              Key: suggestion.profilePicture,
+            };
+            const command = new GetObjectCommand(getObjectParams);
+            const url = await getSignedUrl(s3, command, { expiresIn: 60 });
+            suggestion.profilePictureUrl = url;
+          }
         }
         resolve(suggestions);
       } catch (error) {
@@ -323,23 +350,23 @@ module.exports = {
             },
           },
         ]);
-      
+
         let friendsArr = [];
         friends.forEach((data) => {
           friendsArr.push(data.user[0]);
         });
 
         for (const friend of friendsArr) {
-          if(friend?.profilePicture){
-           const getObjectParams = {
-             Bucket: process.env.BUCKET_NAME,
-             Key: friend.profilePicture,
-           };
-           const command = new GetObjectCommand(getObjectParams);
-           const url = await getSignedUrl(s3, command, { expiresIn: 60 });
-           friend.profilePictureUrl = url;
+          if (friend?.profilePicture) {
+            const getObjectParams = {
+              Bucket: process.env.BUCKET_NAME,
+              Key: friend.profilePicture,
+            };
+            const command = new GetObjectCommand(getObjectParams);
+            const url = await getSignedUrl(s3, command, { expiresIn: 60 });
+            friend.profilePictureUrl = url;
           }
-         }
+        }
         resolve({ status: "ok", fetchFriends: true, friendsArr });
       } catch (error) {
         reject({ status: "error", fetchFriends: false, error });
@@ -352,16 +379,16 @@ module.exports = {
       try {
         const users = await user.find();
         for (const user of users) {
-          if(user?.profilePicture){
-           const getObjectParams = {
-             Bucket: process.env.BUCKET_NAME,
-             Key: user.profilePicture,
-           };
-           const command = new GetObjectCommand(getObjectParams);
-           const url = await getSignedUrl(s3, command, { expiresIn: 60 });
-           user.profilePictureUrl = url;
+          if (user?.profilePicture) {
+            const getObjectParams = {
+              Bucket: process.env.BUCKET_NAME,
+              Key: user.profilePicture,
+            };
+            const command = new GetObjectCommand(getObjectParams);
+            const url = await getSignedUrl(s3, command, { expiresIn: 60 });
+            user.profilePictureUrl = url;
           }
-         }
+        }
         resolve({ status: "ok", fetchAllUsers: true, users });
       } catch (error) {
         reject({ status: "error", fetchAllUsers: false, error });
@@ -411,5 +438,4 @@ module.exports = {
         });
     });
   },
- 
 };

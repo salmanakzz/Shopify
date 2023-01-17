@@ -2,11 +2,11 @@ import PostSide from "../PostSide/PostSide";
 import ProfileLeftSide from "../ProfileLeftSide/ProfileLeftSide";
 import "./ProfileBodySection.css";
 
-function ProfileBodySection() {
+function ProfileBodySection({friends}) {
 
   return (
     <div className="profile-body-inner">
-      <ProfileLeftSide />
+      <ProfileLeftSide friends={friends}/>
       <PostSide page={"profile"}/>
       
     </div>

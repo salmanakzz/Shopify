@@ -28,6 +28,7 @@ export const friendRequestUrl = '/api/friend-request'
 export const removeFriendRequestUrl = '/api/remove-friend-request' 
 export const fetchRequestsUrl = '/api/fetch-requests' 
 export const addFriendUrl = '/api/add-friend' 
+export const removeFriendUrl = '/api/remove-friend' 
 export const fetchSuggestionsUrl = '/api/fetch-suggestions' 
 export const submitReportUrl = '/api/submit-report' 
 export const removeReportUrl = '/api/remove-report' 
@@ -42,6 +43,7 @@ export const fetchChatsUrl = '/chat/api/fetch-chats'
 
 //urls related to chat messages
 export const fetchMessagesUrl = '/message/api/fetch-message'
+export const searchAndFetchMessagesUrl = '/message/api/search-fetch-message'
 export const addMessageUrl = '/message/api/add-message'
 
 // urls related to the admin

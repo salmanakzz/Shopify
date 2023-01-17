@@ -44,16 +44,23 @@ function ChatsBody() {
     });
   }, [currentChat]);
 
-  const checkOnlineStatus = (chat,chatbox) =>{
-    const chatMember = chatbox? chat._id : chat?.members.find((member)=> member !== currentUser._id)
-    const online = onlineUsers?.find((user)=> user.userId === chatMember)
-    return online? true : false
-  }
+  const checkOnlineStatus = (chat, chatbox) => {
+    const chatMember = chatbox
+      ? chat._id
+      : chat?.members.find((member) => member !== currentUser._id);
+    const online = onlineUsers?.find((user) => user.userId === chatMember);
+    return online ? true : false;
+  };
 
   return (
     <div className="chats-body">
-      <ChatLeftSide chats={chats} setCurrentChat={setCurrentChat} checkOnlineStatus={checkOnlineStatus}/>
+      <ChatLeftSide
+        chats={chats}
+        setCurrentChat={setCurrentChat}
+        checkOnlineStatus={checkOnlineStatus}
+      />
       <ChatMiddle
+        page={"chats"}
         currentChat={currentChat}
         setSendMessage={setSendMessage}
         recieveMessage={recieveMessage}

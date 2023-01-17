@@ -1,20 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
 import { fetchMessages } from "../../api/fetchMessages";
 import { getUserData } from "../../api/getUserData";
+import { searchAndFetchMessages } from "../../api/searchAndFetchMessages";
 import { ContextUser } from "../../store/MainContext";
 import MiddleHeader from "./MiddleHeader/MiddleHeader";
 import MiddleSection from "./MiddleSection/MiddleSection";
 
-function ChatMiddle({ currentChat, setSendMessage, recieveMessage, checkOnlineStatus ,setCurrentChat}) {
+function ChatMiddle({
+  currentChat,
+  setSendMessage,
+  recieveMessage,
+  checkOnlineStatus,
+  setCurrentChat,
+  page,
+}) {
   const { currentUser } = useContext(ContextUser);
-
   const [chatUserData, setChatUserData] = useState(null);
   const [messages, setMessages] = useState(null);
 
   useEffect(() => {
-    if(!currentChat?.members){
+    if (!currentChat?.members && currentChat?.firstname) {
       setChatUserData(currentChat);
-      return
+      searchAndFetchMessages( currentChat._id, currentUser._id).then(
+        ({ message }) => {
+          setMessages(message && message);
+        }
+      );
+      return;
     }
     const chatUserId = currentChat?.members?.find(
       (id) => id !== currentUser._id
@@ -36,11 +48,26 @@ function ChatMiddle({ currentChat, setSendMessage, recieveMessage, checkOnlineSt
 
 
   return (
-    <div className="mt-[5rem] chat-middle">
+    <div
+      className={
+        page === "chats"
+          ? "mt-[5rem] chat-middle"
+          : page === "home"
+          ? "mt-[5rem] chat-middle !fixed !w-[20rem] !right-[12%]"
+          : "chat-middle !w-[20rem]"
+      }
+      id={page === "profile" ? "profile-chat-box" : ""}
+    >
       {currentChat ? (
         <>
-          <MiddleHeader chatUserData={chatUserData} online={chatUserData && checkOnlineStatus(chatUserData,true)}/>
+          <MiddleHeader
+            page={page}
+            setCurrentChat={setCurrentChat}
+            chatUserData={chatUserData}
+            online={chatUserData && checkOnlineStatus(chatUserData, true)}
+          />
           <MiddleSection
+            page={page}
             messages={messages}
             setMessages={setMessages}
             currentUserId={currentUser._id}

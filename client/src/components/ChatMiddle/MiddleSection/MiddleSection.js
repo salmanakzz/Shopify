@@ -20,6 +20,7 @@ function MiddleSection({
   setSendMessage,
   recieveMessage,
   setCurrentChat,
+  page,
 }) {
   const [newMessage, setNewMessage] = useState("");
   const scroll = useRef();
@@ -28,6 +29,7 @@ function MiddleSection({
   };
 
   const handleSend = (e) => {
+    console.log(currentChat);
     e.preventDefault();
     if (newMessage) {
       if (currentChat?.members) {
@@ -72,8 +74,14 @@ function MiddleSection({
   useEffect(() => {
     if (recieveMessage !== null && recieveMessage.chatId === currentChat._id) {
       setMessages([...messages, recieveMessage]);
+      return
+    }
+    if(recieveMessage !== null && !currentChat.chatId){
+      setMessages([...messages, recieveMessage]);
     }
   }, [recieveMessage]);
+  console.log(recieveMessage, currentChat);
+
 
   // always scroll to the last message
   useEffect(() => {
@@ -86,7 +94,7 @@ function MiddleSection({
         component="main"
         maxWidth="xs"
         id="chat-card-id"
-        className="custom-main"
+        className={page === "chats" ? "custom-main" : "custom-main !relative"}
       >
         <Box
           className="!pt-0"
@@ -94,7 +102,11 @@ function MiddleSection({
             padding: "12px",
           }}
         >
-          <div className="chat-messages">
+          <div
+            className={
+              page === "chats" ? "chat-messages" : "chat-messages !h-[56vh]"
+            }
+          >
             {messages?.map((message) => (
               <>
                 <div
@@ -121,7 +133,7 @@ function MiddleSection({
         component="main"
         maxWidth="xs"
         id="chat-card-id"
-        className="message-bar"
+        className={page === "chats" ? "message-bar" : "message-bar !relative"}
       >
         <Box
           sx={{

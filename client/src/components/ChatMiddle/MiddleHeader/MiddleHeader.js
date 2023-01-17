@@ -2,17 +2,18 @@ import { Container, Skeleton, Typography } from "@mui/material";
 import Online from "@mui/icons-material/FiberManualRecord";
 import DefaultProfile from "../../../assets/images/DefaultProfile.png";
 import VideocamIcon from "@mui/icons-material/Videocam";
+import ClearIcon from "@mui/icons-material/Clear";
 import React from "react";
 import "./MiddleHeader.css";
 
-function MiddleHeader({ chatUserData, online }) {
+function MiddleHeader({ page, chatUserData, online, setCurrentChat }) {
   return (
     <div className="middle-header">
       <Container
         component="main"
         maxWidth="xs"
         id="chat-card-id"
-        className="custom-main"
+        className={page === "chats" ? "custom-main" : "custom-main !relative"}
       >
         {chatUserData ? (
           <div className="flex justify-between items-center !p-[.35rem] !ml-[5px]">
@@ -37,13 +38,21 @@ function MiddleHeader({ chatUserData, online }) {
                 </span>
               </div>
             </div>
-            <div>
+            <div className="flex justify-center items-center">
               <div className="mr-[5px] hover:bg-[#1976d221] rounded-lg cursor-pointer">
                 <VideocamIcon
                   className="hover:fill-[#005bd1]  m-2"
                   sx={{ fill: "#0066ed" }}
                 />
               </div>
+              {page === "chats" ? '' : (
+                <div className="mr-[5px] hover:bg-[#1976d221] rounded-lg cursor-pointer">
+                  <ClearIcon
+                    onClick={()=> setCurrentChat(null)}
+                    className="suggest-close mr-[6px]"
+                  />
+                </div>
+              )}
             </div>
           </div>
         ) : (

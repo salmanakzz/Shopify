@@ -7,6 +7,7 @@ import Searchbar from "../../Searchbar/Searchbar";
 import "./LeftSection.css";
 
 function LeftSection({ chats, setCurrentChat, checkOnlineStatus }) {
+  console.log(chats);
   const { currentUser } = useContext(ContextUser);
   const [searchChatUsers, setSearchChatUsers] = useState(null)
 

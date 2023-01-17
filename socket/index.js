@@ -28,6 +28,13 @@ io.on("connection", (socket) => {
     io.emit("get-users", activeUsers);
   });
 
+
+  socket.on("logout-disconnect", (userId) => {
+    activeUsers = activeUsers.filter((user) => user.userId !== userId);
+    console.log("User disconnected!", activeUsers);
+    io.emit("get-users", activeUsers);
+  });
+
    //send message 
    socket.on("send-message",(data)=>{
     const {recieverId} = data;
