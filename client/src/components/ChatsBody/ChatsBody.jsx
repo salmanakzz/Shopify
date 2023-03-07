@@ -17,7 +17,7 @@ function ChatsBody() {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("http://localhost:8800");
+    socket.current = io(process.env.REACT_APP_SOCKET_URL);
     socket.current.emit("new-user-add", currentUser._id);
     socket.current.on("get-users", (users) => {
       setOnlineUsers(users);
