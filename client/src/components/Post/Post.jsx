@@ -20,13 +20,15 @@ import { EditPost } from "../../api/EditPost";
 import { LikePost } from "../../api/LikePost";
 import { UnLikePost } from "../../api/UnLikePost";
 import { AddComment } from "../../api/AddComment";
-import PrivateRoutes from "../../routes/PrivateRoutes";
+import { format } from "timeago.js";
 
 export const Post = ({ data, idx }) => {
+  const { currentUser, setProfileUser } = useContext(ContextUser);
   const { firstname, lastname, following, followers } = data.user[0];
   const postUserId = data.user[0]._id;
   let { _id, likes, desc, comments } = data.posts;
-  const settings = ["Edit", "Delete", "Share"];
+  const settings =
+    postUserId === currentUser._id ? ["Edit", "Delete", "Share"] : ["Share"];
 
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [editDesc, setEditDesc] = useState(desc);
@@ -42,7 +44,6 @@ export const Post = ({ data, idx }) => {
 
   const { postDatas, setPostDatas, profilePostDatas, setProfilePostDatas } =
     useContext(ContextAllPosts);
-  const { currentUser, setProfileUser } = useContext(ContextUser);
   const id = currentUser._id;
 
   useEffect(() => {
@@ -123,19 +124,19 @@ export const Post = ({ data, idx }) => {
   };
 
   const handleLike = (userId, postId, postUserId) => {
+    setLiked(true);
+    setLikeCount(likeCount + 1);
     LikePost(userId, postId, postUserId).then((result) => {
       if (result.status === "ok") {
-        setLiked(true);
-        setLikeCount(likeCount + 1);
       }
     });
   };
 
   const handleUnLike = (userId, postId, postUserId) => {
+    setLiked(false);
+    setLikeCount(likeCount - 1);
     UnLikePost(userId, postId, postUserId).then((result) => {
       if (result.status === "ok") {
-        setLiked(false);
-        setLikeCount(likeCount - 1);
       }
     });
   };
@@ -143,7 +144,7 @@ export const Post = ({ data, idx }) => {
   const hangleCommentSubmit = (userId, postId, postUserId, comment) => {
     AddComment(userId, postId, postUserId, comment).then((result) => {
       var inputCom = document.getElementById("input-comment");
-      inputCom.value = ''
+      inputCom.value = "";
       setPostComments(result);
     });
   };
@@ -184,7 +185,11 @@ export const Post = ({ data, idx }) => {
             <div className="flex items-center justify-between mb-2">
               <img
                 className="cursor-pointer w-10 h-10 rounded-full"
-                src={data.user[0]?.profilePictureUrl ?data.user[0].profilePictureUrl : DefaultProfile}
+                src={
+                  data.user[0]?.profilePictureUrl
+                    ? data.user[0].profilePictureUrl
+                    : DefaultProfile
+                }
                 onClick={() => navigateProfile(data.user[0])}
                 alt="Jese Leos"
               />
@@ -233,7 +238,11 @@ export const Post = ({ data, idx }) => {
           <div className="left">
             <img
               className="hover:cursor-pointer"
-              src={data.user[0]?.profilePictureUrl ?data.user[0].profilePictureUrl : DefaultProfile}
+              src={
+                data.user[0]?.profilePictureUrl
+                  ? data.user[0].profilePictureUrl
+                  : DefaultProfile
+              }
               alt=""
               onClick={() => navigateProfile(data.user[0])}
               onMouseOver={() => {
@@ -392,6 +401,7 @@ export const Post = ({ data, idx }) => {
                     {comment.comment}
                   </span>
                 </div>
+                <span className="text-[0.6rem] text-[gray] ml-1">{format(comment.date)}</span>
               </div>
             ))}
           </div>
